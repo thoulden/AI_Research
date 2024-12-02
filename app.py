@@ -16,53 +16,19 @@ with col2:
     st.markdown("[Math Appendix](?page=math_appendix)")
 
 ## parameters to put in table
-def get_parameters_table():
-    data = [
-        {
-            'Parameter': 'f',
-            'Description': 'Initial shock to brainpower dedicated to AI research',
-            'Low Estimate': 2,
-            'Median Estimate': 8,
-            'High Estimate': 32
-        },
-        {
-            'Parameter': r'$\lambda$',
-            'Description': 'Parallelizability of research',
-            'Low Estimate': 0.2,
-            'Median Estimate': 0.5,
-            'High Estimate': 0.8
-        },
-        {
-            'Parameter': r'$\beta$',
-            'Description': 'Diminishing returns in discovering new ideas',
-            'Low Estimate': 0.15,
-            'Median Estimate': 0.45,
-            'High Estimate': 0.75
-        },
-        {
-            'Parameter': r'$\alpha$',
-            'Description': 'Contribution of cognitive labor vs. compute to AI R&D',
-            'Low Estimate': 0.0,
-            'Median Estimate': 0.5,
-            'High Estimate': 1.0
-        },
-        {
-            'Parameter': 'g',
-            'Description': 'Growth rate of software when GPT-6 is deployed',
-            'Low Estimate': 2.0,
-            'Median Estimate': 2.77,
-            'High Estimate': 3.0
-        },
-        {
-            'Parameter': r'$S_{\text{ceiling}}$',
-            'Description': 'Ceiling on the level of software',
-            'Low Estimate': '1e7',
-            'Median Estimate': '1e8',
-            'High Estimate': '1e9'
-        },
-    ]
-    df = pd.DataFrame(data)
-    return df
+def get_parameters_table_markdown():
+    table_markdown = r'''
+| Parameter            | Description                                                         | Low Estimate  | Median Estimate | High Estimate |
+|----------------------|---------------------------------------------------------------------|---------------|-----------------|---------------|
+| $f$                  | Initial shock to brainpower dedicated to AI research                | 2             | 8               | 32            |
+| $\lambda$            | Parallelizability of research                                       | 0.2           | 0.5             | 0.8           |
+| $\beta$              | Diminishing returns in discovering new ideas                        | 0.15          | 0.45            | 0.75          |
+| $\alpha$             | Contribution of cognitive labor vs. compute to AI R&D               | 0.0           | 0.5             | 1.0           |
+| $g$                  | Growth rate of software when GPT-6 is deployed                      | 2.0           | 2.77            | 3.0           |
+| $S_{\text{ceiling}}$ | Ceiling on the level of software                                    | $1 \times 10^{7}$ | $1 \times 10^{8}$ | $1 \times 10^{9}$ |
+    '''
+    return table_markdown
+
 
 
 params = st.experimental_get_query_params()
@@ -74,21 +40,32 @@ else:
     st.title('Simulation of Accelerated Growth Model')
 
     st.markdown(r"""
-    This tool analyzes the impact of automating AI R&D. The key parameters for this tool are: size of initial shock to the amount of brainpower dedicated to AI research ($f$), the parallelizability of research ($\lambda$), the level of diminishing returns for discovering new ideas ($\beta$), the share contribution of cognitive labor vs compute to AI R&D ($\alpha$), the growth rate of software when GPT-6 is deployed ($g$), and the ceiling on the level of software.
+    This tool analyzes the impact of automating AI R&D. The key parameters for this tool are:
 
+    - **$f$**: Size of initial shock to the amount of brainpower dedicated to AI research.
+    - **$\lambda$**: Parallelizability of research.
+    - **$\beta$**: Level of diminishing returns for discovering new ideas.
+    - **$\alpha$**: Share contribution of cognitive labor vs compute to AI R&D.
+    - **$g$**: Growth rate of software when GPT-6 is deployed.
+    - **$S_{\text{ceiling}}$**: Ceiling on the level of software.
+
+    This tool offers two options. You can run a bunch of simulations with uncertainty over key parameters—the output of this function will be a plot showing the fraction of simulations where the growth rate of software exceeds the observed exponential rate by some amount over some number of years. Alternatively, you can run a single simulation under specific parameter values to illustrate the path of AI progress. Under this second option, you will also see the change in the level of diminishing research productivity over time and the growth rates compared to (a) constant exponential progress and (b) the projected path of software without deploying AI to research.
+
+    As above, we allow the stock of compute to grow so that, at the time of GPT-6, growth of the software level looks exponential. Now, we also allow AI to be deployed to research.
+    
     This tool offers two options. You can run a bunch of simulations with uncertainty over key parameters—the output of this function will be a plot which shows the fraction of simulations where the growth rate of software exceeds the observed exponential rate by some amount over some number of years. Alternatively, you can run a single simulation under specific parameter values to illustrate the path of AI progress. Under this second option, you will also see the change in the level of diminishing research productivity over time and the growth rates compared to (a) constant exponential progress and (b) the projected path of software without deploying AI to research.
 
     As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now, I also allow AI to be deployed to research.
     """)
 
-    # Generate a table with parameter estimations
     st.markdown("### Model Parameters and Estimates")
 
-    # Get the parameters table
-    parameters_df = get_parameters_table()
+    # Get the parameters table in Markdown format
+    parameters_table_md = get_parameters_table_markdown()
 
     # Display the table
-    st.table(parameters_df)
+    st.markdown(parameters_table_md)
+
 
     # Simulation Mode Selector
     st.sidebar.title("Simulation Options")
