@@ -40,22 +40,17 @@ else:
     st.title('Simulation of Accelerated Growth Model')
 
     st.markdown(r"""
-    This tool analyzes the impact of automating AI R&D. The key parameters for this tool are:
-
-    - **$f$**: Size of initial shock to the amount of brainpower dedicated to AI research.
-    - **$\lambda$**: Parallelizability of research.
-    - **$\beta$**: Level of diminishing returns for discovering new ideas.
-    - **$\alpha$**: Share contribution of cognitive labor vs compute to AI R&D.
-    - **$g$**: Growth rate of software when GPT-6 is deployed.
-    - **$S_{\text{ceiling}}$**: Ceiling on the level of software.
-
     This tool offers two options. You can run a bunch of simulations with uncertainty over key parameters—the output of this function will be a plot showing the fraction of simulations where the growth rate of software exceeds the observed exponential rate by some amount over some number of years. Alternatively, you can run a single simulation under specific parameter values to illustrate the path of AI progress. Under this second option, you will also see the change in the level of diminishing research productivity over time and the growth rates compared to (a) constant exponential progress and (b) the projected path of software without deploying AI to research.
 
     As above, we allow the stock of compute to grow so that, at the time of GPT-6, growth of the software level looks exponential. Now, we also allow AI to be deployed to research.
+
+    For technical details, refer to the math appendix.
      """)
 
     st.markdown("### Model Parameters and Estimates")
-
+    st.markdown(r"""
+    This table summarizes the paramaters that the model relies on. 
+     """)
     # Get the parameters table in Markdown format
     parameters_table_md = get_parameters_table_markdown()
 
