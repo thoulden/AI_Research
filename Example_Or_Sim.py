@@ -15,13 +15,24 @@ if params.get('page') == ['math_appendix']:
     st.markdown(r"""
     ## Math Appendix
 
-    As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now I also allow AI to be deployed to research.
+    The numerical experiment we consider begins when GPT-6 is released, and assume the law of motion for software: 
     """)
-    
+    st.latex(r"""
+    \dot{S}_t &=& \bar{R}^{\lambda \alpha} {C}_t^{\lambda(1-\alpha)} S_t^{1-\beta(S_t)}
+    """)
     st.markdown(r"""
-    In the last expression, we are saying that the stock of available researchers has to be $f^{\frac{1}{\lambda}}$ larger at $t = 0$ than the case when we didn't deploy AI to research. This means that the software level at GPT-6 must count for $\upsilon$ number of human researchers. This pins down the contribution of software to research for the whole future of research.
-
-    Since we just want to compare the growth rates of software across these two different cases, we have a free parameterization—therefore, I will set $\bar{R} = 1$. We estimate $f$ and we have derived $\bar{S}$; hence, we can calculate an implied value of $\upsilon$:
+    where $S$ is the software level, $\bar{R}$ is stock of human AI researchers at the time GPT-6 is released (we assume this is a fixed quantity over time), $C$ is the compute available for research on AI, and $\alpha \in (0,1)$ dictates the contributions of researchers vs. compute to progress in AI. Importantly, the degree of diminishing returns, $\beta$ is a function of $S$. We assume the functional form for $\beta$ is such that everytime the software level closes half the gap between it's level and some software cieling, $S_{\text{ceiling}}$, $\beta$ doubles. This functional form is given by   
+    """)
+    st.latex(r"""
+    \beta(S_t) &=& \beta_0 \bigg(1- \frac{\frac{S}{\bar{S}} - 1}{\frac{S_{\text{ceiling}}}{\bar{S}} - 1}\bigg)^{-1}
+    """)
+    st.markdown(r"""
+    where $\beta_0$ is the starting level of diminishing returns to research. 
+    
+    In the base case (where AI isn't deployed to AI research after GPT-6) we assume that software level is doubling every three months, this corresponds to an annual growth rate of 2.77. We want to calibrate the model so, under assumptions on $\bar{R}$ and $C_0$ the growth rate of $S$ matches observed growth rates. Dividing the laws of motion by software levels to get growth rates we have 
+    """)
+     st.latex(r"""
+    g_{S,0} &=& \bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)} S_0^{-\beta(S_0) \implies S_0 = [2.77 \times (\bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)})^{-1}]^{\frac{-1}{\beta_0}}
     """)
     
     st.latex(r"""
