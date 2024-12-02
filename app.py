@@ -57,6 +57,7 @@ else:
     # Display the table
     st.markdown(parameters_table_md)
 
+    st.markdown("### Results")
 
     # Simulation Mode Selector
     st.sidebar.title("Simulation Options")
