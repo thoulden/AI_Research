@@ -81,11 +81,14 @@ else:
     As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now, I also allow AI to be deployed to research.
     """)
 
-    # After your main introduction markdown
+    # Generate a table with parameter estimations
     st.markdown("### Model Parameters and Estimates")
 
     # Get the parameters table
     parameters_df = get_parameters_table()
+
+    # Display the table
+    st.table(parameters_df)
 
     # Simulation Mode Selector
     st.sidebar.title("Simulation Options")
