@@ -25,7 +25,7 @@ def get_parameters_table_markdown():
 | $\beta_0$            | Diminishing returns in discovering new ideas when GPT-6 is launched | 0.15          | 0.45            | 0.75          |
 | $\alpha$             | Contribution of cognitive labor vs. compute to AI R&D               | 0.0           | 0.5             | 1.0           |
 | $g$                  | Growth rate of software when GPT-6 is deployed                      | 2.0           | 2.77            | 3.0           |
-| $D$                    | Multiples of GPT-6 we can reach before a ceiling ($ D \equiv S_0 / S_{\text{ceiling}}$) | $10^{7}$ | $10^{8}$ | $10^{9}$ |
+| $D$                    | Multiples of GPT-6 we can reach before a ceiling ($ D \equiv S_{\text{ceiling}} /S_0 $) | $10^{7}$ | $10^{8}$ | $10^{9}$ |
     '''
     return table_markdown
 
