@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 st.title('Simulation of Accelerated Growth Model')
 
 st.markdown(r"""
+This tool analyses the impact of automating AI R&D. The key paramaters for this tool are: size of initial shock to the amount of brainpower dedicated to AI research (f), the paralelizability of research (lambda), the level of diminishing returns for discovering new ideas (beta), the share contribution of cognitive labor vs compute to AI R&D (alpha), the growth rate of software when GPT-6 is deployed (g), and the cieling on the level of software.
+
+This tool offers two options. You can run a bunch of simulations with uncertainty over key parameters -- the output of this function will be a plot which shows the fraction of simulations where the growth rate of software exceeds the observed exponential rate by some amount over some number of years. Alternatively, you can run a single simulation under specific parameter values to illustrate the path of AI progress. Under this second option you will also see the change in the level of diminishing research productivity over time and the growth rates comparred to a). constant exponential progress and b). the projected path of software without deoplying AI to research.
+
 As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now I also allow AI to be deployed to research.
 """)
 
