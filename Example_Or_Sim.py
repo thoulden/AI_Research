@@ -18,13 +18,13 @@ if params.get('page') == ['math_appendix']:
     The numerical experiment we consider begins when GPT-6 is released, and assume the law of motion for software: 
     """)
     st.latex(r"""
-    \dot{S}_t &=& \bar{R}^{\lambda \alpha} {C}_t^{\lambda(1-\alpha)} S_t^{1-\beta(S_t)}
+    \dot{S}_t = \bar{R}^{\lambda \alpha} {C}_t^{\lambda(1-\alpha)} S_t^{1-\beta(S_t)}
     """)
     st.markdown(r"""
     where $S$ is the software level, $\bar{R}$ is stock of human AI researchers at the time GPT-6 is released (we assume this is a fixed quantity over time), $C$ is the compute available for research on AI, $\lambda$ is the degree of parrallelizability in research, and $\alpha \in (0,1)$ dictates the contributions of researchers vs. compute to progress in AI. Importantly, the degree of diminishing returns, $\beta$ is a function of $S$. We assume the functional form for $\beta$ is such that everytime the software level closes half the gap between it's level and some software cieling, $S_{\text{ceiling}}$, $\beta$ doubles. This functional form is given by   
     """)
     st.latex(r"""
-    \beta(S_t) &=& \beta_0 \bigg(1- \frac{\frac{S}{\bar{S}} - 1}{\frac{S_{\text{ceiling}}}{\bar{S}} - 1}\bigg)^{-1}
+    \beta(S_t) = \beta_0 \bigg(1- \frac{\frac{S}{\bar{S}} - 1}{\frac{S_{\text{ceiling}}}{\bar{S}} - 1}\bigg)^{-1}
     """)
     st.markdown(r"""
     where $\beta_0$ is the starting level of diminishing returns to research. 
@@ -32,16 +32,16 @@ if params.get('page') == ['math_appendix']:
     In the base case (where AI isn't deployed to AI research after GPT-6) we assume that software level is doubling every three months, this corresponds to an annual growth rate of 2.77. We want to calibrate the model so, under assumptions on $\bar{R}$ and $C_0$ the growth rate of $S$ matches observed growth rates. Dividing the laws of motion by software levels to get growth rates we have 
     """)
     st.latex(r"""
-    g_{S,0} &=& \bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)} S_0^{-\beta(S_0) \implies S_0 = [2.77 \times (\bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)})^{-1}]^{\frac{-1}{\beta_0}}
+    g_{S,0} = \bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)} S_0^{-\beta(S_0) \implies S_0 = [2.77 \times (\bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)})^{-1}]^{\frac{-1}{\beta_0}}
     """)
     st.markdown(r"""
     Next, we construct a case such that progress in AI would remain exponential (if it weren't for increasing diminishing returns to research); this case requires growth in compute. Specifically, given the form for the growth rate of $S$, for $g_S$ to remain constant we require
     """)
     st.latex(r"""
-    g_C = \frac{\beta_0}{\lambda (1-\alpha) g_{S_0}}
+    g_C = \frac{\beta_0}{\lambda (1-\alpha) }g_{S_0}
     """)
     st.markdown(r"""
-    Equations thus far are sufficient to simulate the path of $S$ over time. Simulation, on can see that this path looks generally exponential for some time until we get quite close to the software ceiling, in which case progress trails off. 
+    Equations thus far are sufficient to simulate the path of $S$ over time. Simulating, one can see that this path looks generally exponential for some time until we get quite close to the software ceiling, in which case progress trails off. 
 
     Now I turn to the case where we allow deployment of AI to accelerate AI research. Specifically, I assume that research accelerates by a factor $f$ after deployment of AI to research. To fix intuition, we can think of this as an increasing of the stock of researchers by $f^{\lambda \alpha}$ at $t=0$.
 
@@ -51,10 +51,10 @@ if params.get('page') == ['math_appendix']:
     R_t = \bar{R} + \upsilon S_t
     """)
     st.markdown(r"""
-    where $\upsilon$ scales software into human resarcher equivalents. To calibrate $\uspilon$ we again look to the initial conditions of the model. Namely, so that the stock of available researchers after reaching GPT-6 is $f^{\lambda \alpha} \times \bar{R}$ we require
+    where $\upsilon$ scales software into human resarcher equivalents. To calibrate $\upsilon$ we again look to the initial conditions of the model. Namely, so that the stock of available researchers after reaching GPT-6 is $f^{\lambda \alpha} \times \bar{R}$ we require
     """)
     st.latex(r"""
-    f^{\lambda \alpha} \bar{R} = \bar{R} + \upsilon S_0 \implies \upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
+    f^{\lambda \alpha} \bar{R} = \bar{R} + \upsilon S_0 \implies \upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda \alpha}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
     """)
     st.markdown(r"""
     We will assume that growth in compute follows the same path as the base case where AI is not deployed to research
