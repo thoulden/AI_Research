@@ -71,10 +71,10 @@ else:
     # Create a placeholder
     result_placeholder = st.empty()
     if not run_simulation:
-    result_placeholder.markdown("To run a simulation, enter values in the sidebar and select **Run Simulation**.")
+        result_placeholder.markdown("To run a simulation, enter values in the sidebar and select **Run Simulation**.")
     else:
 
-    if simulation_mode == "Multiple Simulations":
-        multiple_simulations.run()
-    elif simulation_mode == "Single Simulation":
-        single_simulation.run()
+        if simulation_mode == "Multiple Simulations":
+            multiple_simulations.run()
+        elif simulation_mode == "Single Simulation":
+            single_simulation.run()
