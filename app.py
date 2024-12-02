@@ -61,18 +61,33 @@ else:
 
     st.markdown("### Results")
 
-    # Generate sim button
-    # Simulation Mode Selector
+    # Sidebar Inputs
     st.sidebar.title("Simulation Options")
-    # Create a placeholder
+
+    # Simulation Mode Selector
+    simulation_mode = st.sidebar.selectbox(
+        "Select Simulation Mode",
+        ("Multiple Simulations", "Single Simulation")
+    )
+
+    # Depending on the mode, display the appropriate input widgets
+    if simulation_mode == "Multiple Simulations":
+        multiple_simulations.display_sidebar_inputs()
+    elif simulation_mode == "Single Simulation":
+        single_simulation.display_sidebar_inputs()
+
+    # Run Simulation Button
+    run_simulation = st.sidebar.button('Run Simulation')
+
+    # Results Section
+    st.markdown("### Results")
+
+    # Create a placeholder for the message or results
     result_placeholder = st.empty()
+
     if not run_simulation:
         result_placeholder.markdown("To run a simulation, enter values in the sidebar and select **Run Simulation**.")
     else:
-        simulation_mode = st.sidebar.selectbox(
-        "Select Simulation Mode",
-        ("Multiple Simulations", "Single Simulation")
-        )
         if simulation_mode == "Multiple Simulations":
             multiple_simulations.run()
         elif simulation_mode == "Single Simulation":
