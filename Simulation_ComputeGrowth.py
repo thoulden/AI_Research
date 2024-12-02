@@ -4,6 +4,30 @@ import matplotlib.pyplot as plt
 
 st.title('Simulation of Accelerated Growth Model')
 
+st.markdown("""
+As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now I also allow AI to be deployed to research.
+""")
+
+st.latex(r"""
+\begin{eqnarray}
+    \dot{S}_t &=& {R}_t^{\lambda \alpha} C_t^{\lambda(1-\alpha)}   S_t^{1-\beta(S_t)} \\
+    \frac{1}{\beta(S)} &=& \frac{1}{\beta_0} \left(1 - \frac{\frac{S}{\bar{S}} - 1}{D - 1}\right) \\
+    S_0 &=& \bar{S} = \left[2.77 \times \bar{R}^{-\lambda}\right]^{\frac{1}{\beta_0}} \\
+    R_t &=& \bar{R} + \upsilon S_t \\
+    R_0 &=& f^{\frac{1}{\lambda}} \bar{R} = \bar{R} + \upsilon \bar{S}
+\end{eqnarray}
+""")
+
+st.markdown("""
+In the last expression, we are saying that the stock of available researchers has to be $f^{\frac{1}{\lambda}}$ larger at $t = 0$ than the case when we didn't deploy AI to research. This means that the software level at GPT-6 must count for $\upsilon$ number of human researchers. This pins down the contribution of software to research for the whole future of research.
+
+Since we just want to compare the growth rates of software across these two different cases, we have a free parameterization—therefore, I will set $\bar{R} = 1$. We estimate $f$ and we have derived $\bar{S}$; hence, we can calculate an implied value of $\upsilon$:
+""")
+
+st.latex(r"""
+\upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
+""")
+
 # Simulation settings
 delta_t = st.sidebar.number_input('Time step in years (delta_t)', min_value=0.0001, max_value=1.0, value=0.001, step=0.0001)
 T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=10.0, value=4.0, step=0.1)
