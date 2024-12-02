@@ -2,6 +2,37 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Navigation link at the top right
+col1, col2 = st.columns([8, 1])
+with col1:
+    st.write("")  # Empty placeholder to adjust alignment
+with col2:
+    st.markdown("[Math Appendix](?page=math_appendix)")
+
+params = st.experimental_get_query_params()
+if params.get('page') == ['math_appendix']:
+    # Display Math Appendix
+    st.markdown(r"""
+    ## Math Appendix
+
+    As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now I also allow AI to be deployed to research.
+    """)
+    
+    st.markdown(r"""
+    In the last expression, we are saying that the stock of available researchers has to be $f^{\frac{1}{\lambda}}$ larger at $t = 0$ than the case when we didn't deploy AI to research. This means that the software level at GPT-6 must count for $\upsilon$ number of human researchers. This pins down the contribution of software to research for the whole future of research.
+
+    Since we just want to compare the growth rates of software across these two different cases, we have a free parameterization—therefore, I will set $\bar{R} = 1$. We estimate $f$ and we have derived $\bar{S}$; hence, we can calculate an implied value of $\upsilon$:
+    """)
+    
+    st.latex(r"""
+    \upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
+    """)
+    
+    # Include a link to go back to the main page
+    st.markdown("[Go back](?page=main)")
+    
+else:
+
 st.title('Simulation of Accelerated Growth Model')
 
 st.markdown(r"""
@@ -12,18 +43,10 @@ This tool offers two options. You can run a bunch of simulations with uncertaint
 As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now I also allow AI to be deployed to research.
 """)
 
-st.markdown(r"""
-In the last expression, we are saying that the stock of available researchers has to be $f^{\frac{1}{\lambda}}$ larger at $t = 0$ than the case when we didn't deploy AI to research. This means that the software level at GPT-6 must count for $\upsilon$ number of human researchers. This pins down the contribution of software to research for the whole future of research.
-
-Since we just want to compare the growth rates of software across these two different cases, we have a free parameterization—therefore, I will set $\bar{R} = 1$. We estimate $f$ and we have derived $\bar{S}$; hence, we can calculate an implied value of $\upsilon$:
-""")
-
-st.latex(r"""
-\upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
-""")
 
 
 # Simulation Mode Selector
+st.sidebar.title("Simulation Options")
 simulation_mode = st.sidebar.selectbox(
     "Select Simulation Mode",
     ("Multiple Simulations", "Single Simulation")
