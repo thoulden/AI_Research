@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Import the other modules
 import math_appendix
@@ -13,6 +14,56 @@ with col1:
     st.write("")  # Empty placeholder to adjust alignment
 with col2:
     st.markdown("[Math Appendix](?page=math_appendix)")
+
+## parameters to put in table
+def get_parameters_table():
+    data = [
+        {
+            'Parameter': 'f',
+            'Description': 'Initial shock to brainpower dedicated to AI research',
+            'Low Estimate': 2,
+            'Median Estimate': 8,
+            'High Estimate': 32
+        },
+        {
+            'Parameter': r'$\lambda$',
+            'Description': 'Parallelizability of research',
+            'Low Estimate': 0.2,
+            'Median Estimate': 0.5,
+            'High Estimate': 0.8
+        },
+        {
+            'Parameter': r'$\beta$',
+            'Description': 'Diminishing returns in discovering new ideas',
+            'Low Estimate': 0.15,
+            'Median Estimate': 0.45,
+            'High Estimate': 0.75
+        },
+        {
+            'Parameter': r'$\alpha$',
+            'Description': 'Contribution of cognitive labor vs. compute to AI R&D',
+            'Low Estimate': 0.0,
+            'Median Estimate': 0.5,
+            'High Estimate': 1.0
+        },
+        {
+            'Parameter': 'g',
+            'Description': 'Growth rate of software when GPT-6 is deployed',
+            'Low Estimate': 2.0,
+            'Median Estimate': 2.77,
+            'High Estimate': 3.0
+        },
+        {
+            'Parameter': r'$S_{\text{ceiling}}$',
+            'Description': 'Ceiling on the level of software',
+            'Low Estimate': '1e7',
+            'Median Estimate': '1e8',
+            'High Estimate': '1e9'
+        },
+    ]
+    df = pd.DataFrame(data)
+    return df
+
 
 params = st.experimental_get_query_params()
 if params.get('page') == ['math_appendix']:
@@ -29,6 +80,12 @@ else:
 
     As above, I allow the stock of compute to be growing so that, at the time of GPT-6, growth of the software level looks exponential. Now, I also allow AI to be deployed to research.
     """)
+
+    # After your main introduction markdown
+    st.markdown("### Model Parameters and Estimates")
+
+    # Get the parameters table
+    parameters_df = get_parameters_table()
 
     # Simulation Mode Selector
     st.sidebar.title("Simulation Options")
