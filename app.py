@@ -22,10 +22,10 @@ def get_parameters_table_markdown():
 |----------------------|---------------------------------------------------------------------|---------------|-----------------|---------------|
 | $f$                  | Initial shock to brainpower dedicated to AI research                | 2             | 8               | 32            |
 | $\lambda$            | Parallelizability of research                                       | 0.2           | 0.5             | 0.8           |
-| $\beta$              | Diminishing returns in discovering new ideas                        | 0.15          | 0.45            | 0.75          |
+| $\beta_0$            | Diminishing returns in discovering new ideas when GPT-6 is launched | 0.15          | 0.45            | 0.75          |
 | $\alpha$             | Contribution of cognitive labor vs. compute to AI R&D               | 0.0           | 0.5             | 1.0           |
 | $g$                  | Growth rate of software when GPT-6 is deployed                      | 2.0           | 2.77            | 3.0           |
-| $S_{\text{ceiling}}$ | Ceiling on the level of software                                    | $1 \times 10^{7}$ | $1 \times 10^{8}$ | $1 \times 10^{9}$ |
+| D                    | Multiples of GPT-6 we can reach before a ceiling ($S_0 / S_{\text{ceiling}}$) | $10^{7}$ | $10^{8}$ | $10^{9}$ |
     '''
     return table_markdown
 
