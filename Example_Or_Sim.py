@@ -31,7 +31,7 @@ if params.get('page') == ['math_appendix']:
     
     In the base case (where AI isn't deployed to AI research after GPT-6) we assume that software level is doubling every three months, this corresponds to an annual growth rate of 2.77. We want to calibrate the model so, under assumptions on $\bar{R}$ and $C_0$ the growth rate of $S$ matches observed growth rates. Dividing the laws of motion by software levels to get growth rates we have 
     """)
-     st.latex(r"""
+    st.latex(r"""
     g_{S,0} &=& \bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)} S_0^{-\beta(S_0) \implies S_0 = [2.77 \times (\bar{R}^{\lambda \alpha} {C}_0^{\lambda(1-\alpha)})^{-1}]^{\frac{-1}{\beta_0}}
     """)
     st.markdown(r"""
