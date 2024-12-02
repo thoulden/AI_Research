@@ -60,16 +60,19 @@ else:
     st.markdown(parameters_table_md)
 
     st.markdown("### Results")
-    if not run_simulation:
-        st.markdown("To run a simulation, enter values in the sidebar and select **Run Simulation**.")
 
-    if run_simulation:
+    # Generate sim button
     # Simulation Mode Selector
-        st.sidebar.title("Simulation Options")
-        simulation_mode = st.sidebar.selectbox(
-        "Select Simulation Mode",
-        ("Multiple Simulations", "Single Simulation")
-        )
+    st.sidebar.title("Simulation Options")
+    simulation_mode = st.sidebar.selectbox(
+    "Select Simulation Mode",
+    ("Multiple Simulations", "Single Simulation")
+    )
+    # Create a placeholder
+    result_placeholder = st.empty()
+    if not run_simulation:
+    result_placeholder.markdown("To run a simulation, enter values in the sidebar and select **Run Simulation**.")
+    else:
 
     if simulation_mode == "Multiple Simulations":
         multiple_simulations.run()
