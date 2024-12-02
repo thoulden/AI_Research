@@ -1,3 +1,6 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 # Simulation settings
 delta_t = 0.001  # Time step in years
 T = 4            # Total simulation time in years
