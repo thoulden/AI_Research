@@ -37,9 +37,11 @@ if params.get('page') == ['math_appendix']:
     math_appendix.display()
 else:
     # Main Page Content
-    st.title('Simulation of Accelerated Growth Model')
+    st.title('Simulation of Accelerated AI Progress')
 
     st.markdown(r"""
+    This tool is a supplement to [LINK]. 
+    
     This tool offers two options. You can run a bunch of simulations with uncertainty over key parameters—the output of this function will be a plot showing the fraction of simulations where the growth rate of software exceeds the observed exponential rate by some amount over some number of years. Alternatively, you can run a single simulation under specific parameter values to illustrate the path of AI progress. Under this second option, you will also see the change in the level of diminishing research productivity over time and the growth rates compared to (a) constant exponential progress and (b) the projected path of software without deploying AI to research.
 
     As above, we allow the stock of compute to grow so that, at the time of GPT-6, growth of the software level looks exponential. Now, we also allow AI to be deployed to research.
