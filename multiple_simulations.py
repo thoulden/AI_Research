@@ -33,7 +33,7 @@ def run():
     # Multipliers
     multipliers_2 = st.sidebar.multiselect(
         'Select multipliers for the second CDF (multipliers_2)',
-        options=[3, 10, 30, 50, 100],
+        options=[1, 3, 10, 30, 50, 100],
         default=[3, 10, 30]
     )
 
