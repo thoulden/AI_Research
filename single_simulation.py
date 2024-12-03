@@ -74,7 +74,7 @@ def run():
         g_C_values = np.diff(C) / (C_netend * delta_t)
 
         # First figure: Log plot of S_values over time
-        fig1, axs = plt.subplots(2, 1, figsize=(10, 8))
+        fig1, axs = plt.subplots(figsize=(10, 6))
 
         # Subplot 1: S_values over time (Log Scale)
         axs[0].semilogy(time, S_valuesA, '-', label='Accelerate')
@@ -84,22 +84,23 @@ def run():
         axs[0].set_ylabel('S(t)')
         axs[0].set_title('Simulation of S over Time (Log Scale)')
         axs[0].grid(True)
-        axs[0].legend()
+        axs[0].legend()   
+        st.pyplot(fig1)
 
+        # Second figure: Beta values
+        fig2, axs = plt.subplots(figsize=(10, 6))
         # Subplot 2: beta_S over time
         axs[1].plot(time, beta_SA, '-', label='Accelerate')
         axs[1].plot(time, beta_S, '-', label='Base')
         axs[1].set_xlabel('Time')
         axs[1].set_ylabel(r'$\beta_S(t)$')
-        axs[1].set_title('Beta_S over Time')
+        axs[1].set_title('r$\beta_S(t)$ over Time')
         axs[1].grid(True)
         axs[1].legend()
+        st.pyplot(fig2)
 
-        # Display the first figure
-        st.pyplot(fig1)
-
-        # Second figure: Growth Rate Comparison
-        fig2, ax = plt.subplots(figsize=(10, 6))
+        # Third figure: Growth Rate Comparison
+        fig3, ax = plt.subplots(figsize=(10, 6))
         ax.plot(time[:-1], g_S_valuesA, '-', label='Accelerate')
         ax.plot(time[:-1], g_S_values, '-', label='Base')
         ax.plot(time[:-1], g * np.ones(len(time[:-1])), 'r--', label='Exponential')
@@ -108,6 +109,4 @@ def run():
         ax.set_title('Growth Rate Comparison')
         ax.grid(True)
         ax.legend()
-
-        # Display the second figure
-        st.pyplot(fig2)
+        st.pyplot(fig3)
