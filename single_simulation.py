@@ -74,7 +74,7 @@ def run():
         g_C_values = np.diff(C) / (C_netend * delta_t)
 
         # First figure: Log plot of S_values over time
-        fig1, ax = plt.subplots(figsize=(10, 6))
+        fig1, axs = plt.subplots(figsize=(10, 6))
         # Subplot 1: S_values over time (Log Scale)
         axs[0].semilogy(time, S_valuesA, '-', label='Accelerate')
         axs[0].semilogy(time, S_values, '-', label='Base')
@@ -87,15 +87,15 @@ def run():
         st.pyplot(fig1)
 
         # Second figure: Beta values
-        fig2, ax = plt.subplots(figsize=(10, 6))
+        fig2, axb = plt.subplots(figsize=(10, 6))
         # Subplot 2: beta_S over time
-        axs[1].plot(time, beta_SA, '-', label='Accelerate')
-        axs[1].plot(time, beta_S, '-', label='Base')
-        axs[1].set_xlabel('Time')
-        axs[1].set_ylabel(r'$\beta_S(t)$')
-        axs[1].set_title(' over Time')
-        axs[1].grid(True)
-        axs[1].legend()
+        axb[1].plot(time, beta_SA, '-', label='Accelerate')
+        axb[1].plot(time, beta_S, '-', label='Base')
+        axb[1].set_xlabel('Time')
+        axb[1].set_ylabel(r'$\beta_S(t)$')
+        axb[1].set_title('Diminishing Returns over Time')
+        axb[1].grid(True)
+        axb[1].legend()
         st.pyplot(fig2)
 
         # Third figure: Growth Rate Comparison
