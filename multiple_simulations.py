@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 def run():
     # === Multiple Simulations Code ===
 
+    # Run Simulation Button
+    run_simulation = st.sidebar.button('Run Simulation')
+    
     # Simulation settings
     display_distributions = st.sidebar.checkbox('Display empirical distributions', key='display_distributions')
     delta_t = st.sidebar.number_input('Time step in years (delta_t)', min_value=0.0001, max_value=1.0, value=0.001, step=0.0001)
@@ -14,7 +17,6 @@ def run():
     # Add checkbox for displaying empirical distributions
     st.sidebar.subheader("Display Options")
        
-
     # Parameters for distributions
     lambda_min = st.sidebar.number_input('Minimum Lambda (λ_min)', min_value=0.01, max_value=1.0, value=0.2, step=0.01)
     lambda_max = st.sidebar.number_input('Maximum Lambda (λ_max)', min_value=lambda_min, max_value=1.0, value=0.8, step=0.01)
@@ -40,9 +42,6 @@ def run():
         options=[1, 3, 10, 30, 50, 100],
         default=[3, 10, 30]
     )
-
-    # Run Simulation Button
-    run_simulation = st.sidebar.button('Run Simulation')
 
     # Initialize lists to store sampled parameters
     lambda_samples = []
