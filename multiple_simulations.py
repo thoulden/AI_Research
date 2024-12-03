@@ -159,7 +159,7 @@ def run():
         ## Plot parameter distributions
             # Display empirical distributions if the checkbox is checked
     if display_distributions:
-        st.markdown("# Empirical Distributions of Sampled Parameters")
+        st.markdown("#### Empirical Distributions of Sampled Parameters")
 
         # Create subplots for the histograms
         fig_hist, axs = plt.subplots(2, 2, figsize=(12, 10))
