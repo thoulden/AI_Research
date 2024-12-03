@@ -44,6 +44,13 @@ def run():
     # Run Simulation Button
     run_simulation = st.sidebar.button('Run Simulation')
 
+    # Initialize lists to store sampled parameters
+    lambda_samples = []
+    D_samples = []
+    beta_0_samples = []
+    f_samples = []
+
+        
     if run_simulation:
         counts_over_time_2 = np.zeros((len(multipliers_2), num_steps - 1))
         progress_bar = st.progress(0)
