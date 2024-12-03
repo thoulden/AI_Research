@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 
 def run():
     # === Single Simulation Code ===
-
+    # Run Simulation Button
+    run_simulation = st.sidebar.button('Run Simulation')
+    
     # Simulation settings
     delta_t = st.sidebar.number_input('Time step in years (delta_t)', min_value=0.0001, max_value=1.0, value=0.01, step=0.0001)
     T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=20.0, value=8.0, step=0.1)
@@ -22,9 +24,6 @@ def run():
     beta_0_sample = st.sidebar.number_input('Beta_0 (β₀)', min_value=0.01, max_value=1.0, value=0.7, step=0.01)
     D_sample = st.sidebar.number_input('D', min_value=1e6, max_value=1e12, value=1e7, step=1e6, format="%.0e")
     f_sample = st.sidebar.number_input('f', min_value=1.0, max_value=100.0, value=8.0, step=0.1)
-
-    # Run Simulation Button
-    run_simulation = st.sidebar.button('Run Simulation')
 
     if run_simulation:
         # Compute derived parameters
