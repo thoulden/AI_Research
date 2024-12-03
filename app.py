@@ -59,6 +59,10 @@ else:
     # Display the table
     st.markdown(parameters_table_md)
 
+    st.markdown("### Sampling")
+
+    st.markdown("When 'multiple simulations' is selected randomization occurs over log-uniform distributions for $f$, $\beta_0$, $\lambda$, and $D$. ")
+
     st.markdown("### Results")
 
     # Simulation Mode Selector
