@@ -40,7 +40,7 @@ else:
     st.title('Simulation of Accelerated AI Progress')
 
     st.markdown(r"""
-    This tool is a supplement to [LINK]. The purpose of this tool is to simulate the path of AI progress once AI provides 'cognitive labor' for AI research.
+    This tool is a supplement to [LINK]. The purpose of this tool is to simulate the path of AI progress once AI provides 'cognitive labor' for AI research. Unlike standard applications of semi-endogenous growth theory, I assume that deminishing returns to (software) research effort is increasing with the level of software. 
     
     This tool offers two options. You can run a bunch of simulations with uncertainty over key parameters—the output of this function will be a plot showing the fraction of simulations where the growth rate of software exceeds the observed exponential rate by some amount over some number of years. Alternatively, you can run a single simulation under specific parameter values to illustrate the path of AI progress. Under this second option, you will also see the change in the level of diminishing research productivity over time and the growth rates. The cases considered are the following: 
     - Exponential: This is a hypothetical case where software growth continued at the same rate as when GPT-6 is released. This is hypothetical since it ignores increasing diminishing returns to research. Exponential progress is maintained through a growing compute stock to offset (fixed) diminishing returns to research.
