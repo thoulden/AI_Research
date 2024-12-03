@@ -133,6 +133,10 @@ def run():
         exclude_time = st.sidebar.number_input('Exclude data before (years)', min_value=0.0, max_value=float(T), value=0.03, step=0.01)
         time_mask = time[:-1] >= exclude_time
 
+        # Add checkbox for displaying empirical distributions
+        st.sidebar.subheader("Display Options")
+        display_distributions = st.sidebar.checkbox('Display empirical distributions', key='display_distributions')
+        
         # Plot the smoothed CDFs (Second Case)
         fig, ax = plt.subplots(figsize=(10, 6))
         for m_idx, multiplier in enumerate(multipliers_2):
