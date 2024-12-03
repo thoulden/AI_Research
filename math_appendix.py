@@ -32,7 +32,7 @@ def display():
     st.markdown(r"""
     Equations thus far are sufficient to simulate the path of $S$ over time. Simulating, one can see that this path looks generally exponential for some time until we get quite close to the software ceiling, in which case progress trails off. 
 
-    Now I turn to the case where we allow deployment of AI to accelerate AI research. Specifically, I assume that research accelerates by a factor $f$ after deployment of AI to research. To fix intuition, we can think of this as an increasing of the stock of researchers by $f^{\lambda \alpha}$ at $t=0$.
+    Now I turn to the case where we allow deployment of AI to accelerate AI research. Specifically, I assume that research accelerates by a factor $f$ after deployment of AI to research. To fix intuition, we can think of this as an increasing of the stock of researchers by $f^{\frac{1}{\lambda \alpha}}$ at $t=0$.
 
     Next, we need to determine how AI progress contributes to the increased stock of AI researchers. I assume 
     """)
@@ -40,10 +40,10 @@ def display():
     R_t = \bar{R} + \upsilon S_t
     """)
     st.markdown(r"""
-    where $\upsilon$ scales software into human researcher equivalents. To calibrate $\upsilon$, we again look to the initial conditions of the model. Namely, so that the stock of available researchers after reaching GPT-6 is $f^{\lambda \alpha} \times \bar{R}$, we require
+    where $\upsilon$ scales software into human researcher equivalents. To calibrate $\upsilon$, we again look to the initial conditions of the model. Namely, so that the stock of available researchers after reaching GPT-6 is $f^{\frac{1}{\lambda \alpha}} \times \bar{R}$, we require
     """)
     st.latex(r"""
-    f^{\lambda \alpha} \bar{R} = \bar{R} + \upsilon S_0 \implies \upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda \alpha}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
+    f^{\frac{1}{\lambda \alpha}} \bar{R} = \bar{R} + \upsilon S_0 \implies \upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda \alpha}} - 1\right) \times \left[2.77 \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
     """)
     st.markdown(r"""
     We will assume that growth in compute follows the same path as the base case where AI is not deployed to research.
