@@ -17,13 +17,13 @@ def run():
     R_bar = st.sidebar.number_input('R_bar', min_value=0.0, max_value=10.0, value=1.0, step=0.1)
     C_0 = st.sidebar.number_input('C_0', min_value=0.0, max_value=10.0, value=1.0, step=0.1)
     g = st.sidebar.number_input('Growth rate (g)', min_value=0.1, max_value=10.0, value=2.77, step=0.01)
-    alpha = st.sidebar.number_input('Alpha (α)', min_value=0.0, max_value=1.0, value=0.5, step=0.01)
+    alpha = st.sidebar.number_input('Labor share of research (α)', min_value=0.0, max_value=1.0, value=0.5, step=0.01)
 
     # Parameters for the simulation
-    lambda_sample = st.sidebar.number_input('Lambda (λ)', min_value=0.01, max_value=1.0, value=0.7, step=0.01)
-    beta_0_sample = st.sidebar.number_input('Beta_0 (β₀)', min_value=0.01, max_value=1.0, value=0.7, step=0.01)
-    D_sample = st.sidebar.number_input('D', min_value=1e6, max_value=1e12, value=1e7, step=1e6, format="%.0e")
-    f_sample = st.sidebar.number_input('f', min_value=1.0, max_value=100.0, value=8.0, step=0.1)
+    lambda_sample = st.sidebar.number_input('Parallelizability (λ)', min_value=0.01, max_value=1.0, value=0.7, step=0.01)
+    beta_0_sample = st.sidebar.number_input('Diminishing Returns Initial (β₀)', min_value=0.01, max_value=1.0, value=0.7, step=0.01)
+    D_sample = st.sidebar.number_input('Ceiling (D)', min_value=1e6, max_value=1e12, value=1e7, step=1e6, format="%.0e")
+    f_sample = st.sidebar.number_input('Acceleration term (f)', min_value=1.0, max_value=100.0, value=8.0, step=0.1)
 
     if run_simulation:
         # Compute derived parameters
