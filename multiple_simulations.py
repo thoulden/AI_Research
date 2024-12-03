@@ -170,26 +170,26 @@ def run():
         bin_edges_f = np.logspace(np.log10(f_min), np.log10(f_max), num=20)
         
         # Plot histogram for lambda_samples
-        axs[0, 0].hist(lambda_samples, bins='bin_edges_lambda', edgecolor='black')
+        axs[0, 0].hist(lambda_samples, bins=bin_edges_lambda, edgecolor='black')
         axs[0, 0].set_title('Distribution of Lambda (λ)')
         axs[0, 0].set_xlabel('Lambda (λ)')
         axs[0, 0].set_ylabel('Frequency')
 
         # Plot histogram for D_samples
-        axs[0, 1].hist(D_samples, bins='bin_edges_D', edgecolor='black')
+        axs[0, 1].hist(D_samples, bins=bin_edges_D, edgecolor='black')
         axs[0, 1].set_xscale('log')  # Log scale for D
         axs[0, 1].set_title('Distribution of D (log scale)')
         axs[0, 1].set_xlabel('D')
         axs[0, 1].set_ylabel('Frequency')
 
         # Plot histogram for beta_0_samples
-        axs[1, 0].hist(beta_0_samples, bins='bin_edges_beta_0', edgecolor='black')
+        axs[1, 0].hist(beta_0_samples, bins=bin_edges_beta_0, edgecolor='black')
         axs[1, 0].set_title('Distribution of Beta_0 (β₀)')
         axs[1, 0].set_xlabel('Beta_0 (β₀)')
         axs[1, 0].set_ylabel('Frequency')
 
         # Plot histogram for f_samples
-        axs[1, 1].hist(f_samples, bins='bin_edges_f', edgecolor='black')
+        axs[1, 1].hist(f_samples, bins=bin_edges_f, edgecolor='black')
         axs[1, 1].set_xscale('log')  # Log scale for f
         axs[1, 1].set_title('Distribution of f (log scale)')
         axs[1, 1].set_xlabel('f')
