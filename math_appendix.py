@@ -47,6 +47,8 @@ def display():
     """)
     st.markdown(r"""
     We will assume that growth in compute follows the same path as the base case where AI is not deployed to research.
+
+    A useful property of this environment is that the ratio $g_{S,\text{accelerated}}/g_{S,\text{base}}$ is unaffected by choices of $\bar{R}$ and $C_0$ -- this ratio is what is being studied in the multiple simulations case. [to prove]
     """)
     # Include a link to go back to the main page
     st.markdown("[Go back](?page=main)")
