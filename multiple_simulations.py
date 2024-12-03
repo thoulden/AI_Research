@@ -132,7 +132,7 @@ def run():
             return np.convolve(data, np.ones(window_size) / window_size, mode='same')
 
         # Define the window size for smoothing (adjust as needed)
-        window_size = st.sidebar.slider('Smoothing window size', min_value=1, max_value=200, value=70, step=1)
+        #window_size = st.sidebar.slider('Smoothing window size', min_value=1, max_value=200, value=70, step=1)
 
         # Apply smoothing to each multiplier's data (second case)
         fractions_smoothed_2 = np.zeros_like(fractions_over_time_2)
@@ -140,8 +140,8 @@ def run():
             fractions_smoothed_2[m_idx] = moving_average(fractions_over_time_2[m_idx], window_size)
 
         # Create a time mask to exclude data before a certain time
-        exclude_time = st.sidebar.number_input('Exclude data before (years)', min_value=0.0, max_value=float(T), value=0.03, step=0.01)
-        time_mask = time[:-1] >= exclude_time
+        #exclude_time = st.sidebar.number_input('Exclude data before (years)', min_value=0.0, max_value=float(T), value=0.03, step=0.01)
+        #time_mask = time[:-1] >= exclude_time
 
         # Plot the smoothed CDFs (Second Case)
         fig, ax = plt.subplots(figsize=(10, 6))
