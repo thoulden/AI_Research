@@ -20,7 +20,7 @@ def get_parameters_table_markdown():
     table_markdown = r'''
 | Parameter            | Description                                                         | Low Estimate  | Median Estimate | High Estimate |
 |----------------------|---------------------------------------------------------------------|---------------|-----------------|---------------|
-| $f$                  | Initial shock to brainpower dedicated to AI research                | 2             | 8               | 32            |
+| $f$                  | Change in the rate of software growth after deploying AI to research  | 2             | 8               | 32            |
 | $\lambda$            | Parallelizability of research                                       | 0.2           | 0.5             | 0.8           |
 | $\beta_0$            | Diminishing returns in discovering new ideas when GPT-6 is launched | 0.15          | 0.45            | 0.75          |
 | $\alpha$             | Contribution of cognitive labor vs. compute to AI R&D               | 0.0           | 0.5             | 1.0           |
