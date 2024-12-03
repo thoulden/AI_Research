@@ -55,7 +55,7 @@ def run():
             # Non-accelerated case
             beta_S[t] = beta_0_sample * (1 - ((S_values[t - 1] / S_bar - 1) / (D_sample - 1))) ** (-1)
             C[t] = C[t - 1] * (1 + delta_t * g * beta_0_sample / (lambda_sample * (1 - alpha)))
-            S_values[t] = S_values[t - 1] + delta_t * (R_bar ** (lambda_sample * alpha)) * (C[t - 1] ** (lambda_sample * (1 - alpha))) * (S_values[t - 1] ** (1 - beta_S[t - 1]))
+            S_values[t] = S_values[t - 1] + delta_t * R_bar ** (lambda_sample * alpha) * C[t - 1] ** (lambda_sample * (1 - alpha)) * (S_values[t - 1] ** (1 - beta_S[t - 1]))
 
             # Accelerated case
             beta_SA[t] = beta_0_sample * (1 - ((S_valuesA[t - 1] / S_bar - 1) / (D_sample - 1))) ** (-1)
