@@ -52,6 +52,12 @@ def run():
             beta_0_sample = np.exp(np.random.uniform(np.log(beta_0_min), np.log(beta_0_max)))
             f_sample = np.exp(np.random.uniform(np.log(f_min), np.log(f_max)))
 
+            # Store sampled parameters
+            lambda_samples.append(lambda_sample)
+            D_samples.append(D_sample)
+            beta_0_samples.append(beta_0_sample)
+            f_samples.append(f_sample)
+
             # Compute derived parameters
             S_bar = (g * R_bar ** (-lambda_sample * alpha) * C_0 ** (-lambda_sample * (1-alpha))) ** (-1 / beta_0_sample)
             R0 = f_sample ** (1 / (lambda_sample * alpha)) * R_bar
