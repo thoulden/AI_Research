@@ -17,7 +17,7 @@ def run():
     R_bar = st.sidebar.number_input('R_bar', min_value=0.0, max_value=10.0, value=1.0, step=0.1)
     C_0 = st.sidebar.number_input('C_0', min_value=0.0, max_value=10.0, value=1.0, step=0.1)
     g = st.sidebar.number_input('Growth rate (g)', min_value=0.1, max_value=10.0, value=2.77, step=0.01)
-    alpha = st.sidebar.number_input('Alpha (α)', min_value=0.0, max_value=1.0, value=0.9, step=0.01)
+    alpha = st.sidebar.number_input('Alpha (α)', min_value=0.0, max_value=1.0, value=0.5, step=0.01)
 
     # Parameters for the simulation
     lambda_sample = st.sidebar.number_input('Lambda (λ)', min_value=0.01, max_value=1.0, value=0.7, step=0.01)
