@@ -103,7 +103,7 @@ def run():
         ax3.plot(time[:-1], g * np.ones(len(time[:-1])), 'r--', label='Exponential')
         ax3.set_xlabel('Time')
         ax3.set_ylabel('g')
-        ax3.set_title('Growth Rate Comparison')
+        ax3.set_title('Growth Rate of Software Comparison')
         ax3.grid(True)
         ax3.legend()
         st.pyplot(fig3)
