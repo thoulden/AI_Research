@@ -79,7 +79,7 @@ def run():
         # Subplot 1: S_values over time (Log Scale)
         axs[0].semilogy(time, S_valuesA, '-', label='Accelerate')
         axs[0].semilogy(time, S_values, '-', label='Base')
-        axs[0].semilogy(time, S_values_Exp, '-', label='Exp')
+        axs[0].semilogy(time, S_values_Exp, 'r--', label='Exp')
         axs[0].set_xlabel('Time')
         axs[0].set_ylabel('S(t)')
         axs[0].set_title('Simulation of S over Time (Log Scale)')
