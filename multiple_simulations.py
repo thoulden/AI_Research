@@ -142,6 +142,43 @@ def run():
         ax.set_title('Fraction of Simulations where Accelerated Case growth exceeds Base case growth over time')
         ax.legend()
         ax.grid(True)
-
         # Display the plot in Streamlit
         st.pyplot(fig)
+
+        ## Plot parameter distributions
+            # Display empirical distributions if the checkbox is checked
+    if display_distributions:
+        st.markdown("### Empirical Distributions of Sampled Parameters")
+
+        # Create subplots for the histograms
+        fig_hist, axs = plt.subplots(2, 2, figsize=(12, 10))
+
+        # Plot histogram for lambda_samples
+        axs[0, 0].hist(lambda_samples, bins='auto', edgecolor='black')
+        axs[0, 0].set_title('Distribution of Lambda (λ)')
+        axs[0, 0].set_xlabel('Lambda (λ)')
+        axs[0, 0].set_ylabel('Frequency')
+
+        # Plot histogram for D_samples
+        axs[0, 1].hist(D_samples, bins='auto', edgecolor='black')
+        axs[0, 1].set_xscale('log')  # Log scale for D
+        axs[0, 1].set_title('Distribution of D (log scale)')
+        axs[0, 1].set_xlabel('D')
+        axs[0, 1].set_ylabel('Frequency')
+
+        # Plot histogram for beta_0_samples
+        axs[1, 0].hist(beta_0_samples, bins='auto', edgecolor='black')
+        axs[1, 0].set_title('Distribution of Beta_0 (β₀)')
+        axs[1, 0].set_xlabel('Beta_0 (β₀)')
+        axs[1, 0].set_ylabel('Frequency')
+
+        # Plot histogram for f_samples
+        axs[1, 1].hist(f_samples, bins='auto', edgecolor='black')
+        axs[1, 1].set_xscale('log')  # Log scale for f
+        axs[1, 1].set_title('Distribution of f (log scale)')
+        axs[1, 1].set_xlabel('f')
+        axs[1, 1].set_ylabel('Frequency')
+
+        plt.tight_layout()
+        st.pyplot(fig_hist)
+
