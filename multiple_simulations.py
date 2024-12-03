@@ -132,7 +132,7 @@ def run():
             return np.convolve(data, np.ones(window_size) / window_size, mode='same')
 
         # Define the window size for smoothing (adjust as needed)
-        #window_size = st.sidebar.slider('Smoothing window size', min_value=1, max_value=200, value=70, step=1)
+        window_size = st.sidebar.slider('Smoothing window size', min_value=1, max_value=200, value=70, step=1)
 
         # Apply smoothing to each multiplier's data (second case)
         fractions_smoothed_2 = np.zeros_like(fractions_over_time_2)
@@ -140,8 +140,8 @@ def run():
             fractions_smoothed_2[m_idx] = moving_average(fractions_over_time_2[m_idx], window_size)
 
         # Create a time mask to exclude data before a certain time
-        #exclude_time = st.sidebar.number_input('Exclude data before (years)', min_value=0.0, max_value=float(T), value=0.03, step=0.01)
-        #time_mask = time[:-1] >= exclude_time
+        exclude_time = st.sidebar.number_input('Exclude data before (years)', min_value=0.0, max_value=float(T), value=0.03, step=0.01)
+        time_mask = time[:-1] >= exclude_time
 
         # Plot the smoothed CDFs (Second Case)
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -163,27 +163,33 @@ def run():
         # Create subplots for the histograms
         fig_hist, axs = plt.subplots(2, 2, figsize=(12, 10))
 
+        # Generate log bins
+        bin_edges_lambda = np.logspace(np.log10(lambda_min), np.log10(lambda_max), num=20)
+        bin_edges_D = np.logspace(np.log10(D_min), np.log10(D_max), num=20)
+        bin_edges_beta_0 = np.logspace(np.log10(beta_0_min), np.log10(beta_0_max), num=20)
+        bin_edges_f = np.logspace(np.log10(f_min), np.log10(f_max), num=20)
+        
         # Plot histogram for lambda_samples
-        axs[0, 0].hist(lambda_samples, bins='auto', edgecolor='black')
+        axs[0, 0].hist(lambda_samples, bins='bin_edges_lambda', edgecolor='black')
         axs[0, 0].set_title('Distribution of Lambda (λ)')
         axs[0, 0].set_xlabel('Lambda (λ)')
         axs[0, 0].set_ylabel('Frequency')
 
         # Plot histogram for D_samples
-        axs[0, 1].hist(D_samples, bins='auto', edgecolor='black')
+        axs[0, 1].hist(D_samples, bins='bin_edges_D', edgecolor='black')
         axs[0, 1].set_xscale('log')  # Log scale for D
         axs[0, 1].set_title('Distribution of D (log scale)')
         axs[0, 1].set_xlabel('D')
         axs[0, 1].set_ylabel('Frequency')
 
         # Plot histogram for beta_0_samples
-        axs[1, 0].hist(beta_0_samples, bins='auto', edgecolor='black')
+        axs[1, 0].hist(beta_0_samples, bins='bin_edges_beta_0', edgecolor='black')
         axs[1, 0].set_title('Distribution of Beta_0 (β₀)')
         axs[1, 0].set_xlabel('Beta_0 (β₀)')
         axs[1, 0].set_ylabel('Frequency')
 
         # Plot histogram for f_samples
-        axs[1, 1].hist(f_samples, bins='auto', edgecolor='black')
+        axs[1, 1].hist(f_samples, bins='bin_edges_f', edgecolor='black')
         axs[1, 1].set_xscale('log')  # Log scale for f
         axs[1, 1].set_title('Distribution of f (log scale)')
         axs[1, 1].set_xlabel('f')
