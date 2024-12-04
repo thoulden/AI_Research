@@ -50,8 +50,8 @@ def run():
     f_max = st.sidebar.number_input('Maximum f (f_max)', min_value=f_min, max_value=100.0, value=32.0, step=0.1)
 
     # Fixed parameters
-    R_bar = 1
-    C_0 = 1
+    R_bar = st.sidebar.number_input('R_bar', min_value=0.0, max_value=100000.0, value=1.0, step=0.1)
+    C_0 = st.sidebar.number_input('C_0', min_value=0.0, max_value=100000.0, value=1.0, step=0.1)
     g = st.sidebar.number_input('Growth rate (g)', min_value=0.1, max_value=10.0, value=2.77, step=0.01)
     alpha = st.sidebar.number_input('Alpha (α)', min_value=0.0, max_value=1.0, value=1.0, step=0.01)
 
