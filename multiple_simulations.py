@@ -229,7 +229,7 @@ def run():
         # Plot histogram for D_samples
         axs[0, 1].hist(D_samples, bins=bin_edges_D, edgecolor='black')
         axs[0, 1].set_xscale('log')  # Log scale for D
-        axs[0, 1].set_title('Distribution of D (log scale)')
+        axs[0, 1].set_title(r'Distribution of ceiling term  ($D$, log scale)')
         axs[0, 1].set_xlabel('D')
         axs[0, 1].set_ylabel('Frequency')
 
@@ -242,7 +242,7 @@ def run():
         # Plot histogram for f_samples
         axs[1, 1].hist(f_samples, bins=bin_edges_f, edgecolor='black')
         axs[1, 1].set_xscale('log')  # Log scale for f
-        axs[1, 1].set_title('Distribution of f (log scale)')
+        axs[1, 1].set_title(r'Distribution of Speed Up ($f$, log scale)')
         axs[1, 1].set_xlabel('f')
         axs[1, 1].set_ylabel('Frequency')
 
