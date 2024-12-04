@@ -258,20 +258,6 @@ def run():
         ax_scatter.set_title('Scatter Plot of Beta_0 vs. f')
         ax_scatter.grid(True)
 
-        # Optional: Add a trend line (linear regression) to visualize correlation
-        if enable_correlation:
-            # Perform linear regression in log-space to fit the underlying relationship
-            # Since the correlation was introduced in log-space, fitting in log-space makes sense
-            log_f = np.log(f_samples)
-            log_beta0 = np.log(beta_0_samples)
-            slope, intercept = np.polyfit(log_f, log_beta0, 1)
-            # Generate fitted values
-            fitted_log_beta0 = intercept + slope * log_f
-            fitted_beta0 = np.exp(fitted_log_beta0)
-            # Plot the trend line
-            ax_scatter.plot(f_samples, fitted_beta0, color='red', linewidth=2, label='Trend Line (Fitted)')
-            ax_scatter.legend()
-
         st.pyplot(fig_scatter)
 
 
