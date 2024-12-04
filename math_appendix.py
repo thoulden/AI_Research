@@ -5,10 +5,12 @@ def display():
     
     st.markdown("""##### Semi-Endogenous Growth Environment""")
     st.markdown(r""" Throughout, I assume software, $S$ follows the law of motion""")
-
     st.latex(r"""
     \dot{S}_t = (R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda} S_t^{1-\Beta}
     """)
+    st.markdown(r""" and across the three cases considered (accelerate, base case, and exponential) I just vary $R_t$ and $\Beta$""")
+
+    
     st.markdown(r"""
     The numerical experiment we consider begins when GPT-6 is released, and assume the law of motion for software: 
     """)
