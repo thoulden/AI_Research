@@ -80,8 +80,7 @@ def run():
         ax1.semilogy(time, S_values, '-', label='Base') # Base case line
         ax1.semilogy(time, S_values_Exp, 'r--', label='Exp') # Exponential line
         ax1.semilogy(time, ceiling, 'black', linewidth=0.5)  # Ceiling line
-        ax1.text(time[2], ceiling[2]+log(D)/100, 'Ceiling', fontsize=8, color='black')
-
+        ax1.text(time[2], ceiling[2] + log(D)/100, 'Ceiling', fontsize=8, color='black')
         ax1.set_xlabel('Time')
         ax1.set_ylabel('S(t)')
         ax1.set_title('Software level over Time (Log Scale)')
