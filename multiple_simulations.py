@@ -9,9 +9,9 @@ def run():
     run_simulation = st.sidebar.button('Run Simulation')
     
     # Simulation settings
+    st.sidebar.subheader("Sampling Options")
     display_distributions = st.sidebar.checkbox('Display empirical distributions', key='display_distributions')
     # Add checkbox for enabling correlated sampling
-    st.sidebar.subheader("Sampling Options")
     enable_correlation = st.sidebar.checkbox(
     'Enable correlated sampling of Beta_0 and f', 
     key='enable_correlation'
