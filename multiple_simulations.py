@@ -249,13 +249,29 @@ def run():
         plt.tight_layout()
         st.pyplot(fig_hist)
 
-        # Plots correlation between f and beta
-        st.markdown("##### Correlation between Beta_0 and f")
+        # Optional: Scatter plot to visualize correlation on linear scales
+        st.markdown("### Correlation between Beta_0 and f")
         fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
-        ax_scatter.scatter(np.log(f_samples), np.beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
-        ax_scatter.set_xlabel('Log(f)')
+        ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
+        ax_scatter.set_xlabel('f')
         ax_scatter.set_ylabel('Beta_0')
-        ax_scatter.set_title('Scatter Plot of Log(Beta_0) vs. Log(f)')
+        ax_scatter.set_title('Scatter Plot of Beta_0 vs. f')
         ax_scatter.grid(True)
+
+        # Optional: Add a trend line (linear regression) to visualize correlation
+        if enable_correlation:
+            # Perform linear regression in log-space to fit the underlying relationship
+            # Since the correlation was introduced in log-space, fitting in log-space makes sense
+            log_f = np.log(f_samples)
+            log_beta0 = np.log(beta_0_samples)
+            slope, intercept = np.polyfit(log_f, log_beta0, 1)
+            # Generate fitted values
+            fitted_log_beta0 = intercept + slope * log_f
+            fitted_beta0 = np.exp(fitted_log_beta0)
+            # Plot the trend line
+            ax_scatter.plot(f_samples, fitted_beta0, color='red', linewidth=2, label='Trend Line (Fitted)')
+            ax_scatter.legend()
+
         st.pyplot(fig_scatter)
+
 
