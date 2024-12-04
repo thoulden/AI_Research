@@ -12,13 +12,17 @@ def display():
     st.markdown("""###### Exponential Case""")
     st.markdown(r""" To achieve exponential growth in software I assume $\Beta$ remains fixed at $\beta_0$, i.e., the level of diminishing returns to research when GPT-6 is launched. Given (constant) diminishing returns to research, either the number of researchers, or the amount of compute must be growing over time. I assume it is compute growing; if we allowed (human) researchers to grow at the rate necessary to maintain exponential growth there would quickly become more human AI researchers than humans on the planet. Dividing the law of motion by software level yields the software growth rate:""")
     st.latex(r"""
-    g_{S} = (R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda} S_t^{-\Beta}
+    g_{S} = (R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda} S_t^{-\beta_0}
     """)
     st.markdown(r""" and to ensure that the growth rate is constant, we must have $(R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda}$ growing at the same rate $S_t^{-\Beta}$ is shrinking. I.e, """) 
     st.latex(r"""
     g_C = \frac{\beta_0}{\lambda (1-\alpha) }g_{S,0}
     """)
-    st.markdown(r""" To close out the model, we just assume $C_0$ is given and $R_t = \bar{R}$ for all $t$. """)
+    st.markdown(r""" Next, we need a value for $S_0$. Given our expression for $g_S$, which is given, we can back out $S_0$:""")
+    st.latex(r"""
+    S_0 = g_S^{\frac{-1}{\beta_0}}(\bar{R}^{ \alpha} {C}_t^{1-\alpha})^{-\frac{\lambda}{\beta_0}} 
+    """)
+    st.markdown(r""" To close out the model, we just assume $C_0$ is given and $R_t = \bar{R}$ for all $t$ and $\bar{R}$ is given. """)
 
     st.markdown("""###### Base Case""")
     st.markdown(r"""
