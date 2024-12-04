@@ -222,7 +222,7 @@ def run():
         
         # Plot histogram for lambda_samples
         axs[0, 0].hist(lambda_samples, bins=bin_edges_lambda, edgecolor='black')
-        axs[0, 0].set_title('Distribution of Lambda (λ)')
+        axs[0, 0].set_title('Distribution of Parallelizability (λ)')
         axs[0, 0].set_xlabel('Lambda (λ)')
         axs[0, 0].set_ylabel('Frequency')
 
@@ -235,8 +235,8 @@ def run():
 
         # Plot histogram for beta_0_samples
         axs[1, 0].hist(beta_0_samples, bins=bin_edges_beta_0, edgecolor='black')
-        axs[1, 0].set_title('Distribution of Beta_0 (β₀)')
-        axs[1, 0].set_xlabel('Beta_0 (β₀)')
+        axs[1, 0].set_title('Distribution of Initial Diminishing Returns (β₀)')
+        axs[1, 0].set_xlabel('β₀')
         axs[1, 0].set_ylabel('Frequency')
 
         # Plot histogram for f_samples
@@ -255,7 +255,7 @@ def run():
             fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
             ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
             ax_scatter.set_xlabel('f')
-            ax_scatter.set_ylabel('Beta_0')
+            ax_scatter.set_ylabel(r'Beta_0')
             ax_scatter.set_title(r'Scatter Plot of $\beta_0$ vs. $f$')
             ax_scatter.grid(True)
 
