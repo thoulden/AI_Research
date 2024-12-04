@@ -61,7 +61,7 @@ def display():
     Ignoring $\epsilon$ for a second, to calibrate the slope we just need to ensure that choices of $f$ are scaled so that each choice in the range of possible $f$ can 'pick out' a possible $\beta_0$ value. To do this, set 
     """)
     st.latex(r"""
-    \text{Slope} = \frac{\log(\beta_{0,max})-\log(\beta_{0,min})}{\log(\f{max}) -\log(\f{max})}
+    \text{Slope} = \frac{\log(\beta_{0,max})-\log(\beta_{0,min})}{\log(f_{max}) -\log(f_{max})}
     """)
     st.markdown(r"""Then we just have to solve for intercept that ensures (still, ignoring $\epsilon$) that picking $f_{min}$ will result in $\beta_{0,min}$ being chosen (and likewise for max values). This yields
     """)
