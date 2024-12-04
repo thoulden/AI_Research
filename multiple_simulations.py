@@ -17,6 +17,21 @@ def run():
     key='enable_correlation'
     )
 
+    # Conditional input for noise standard deviation
+    if enable_correlation:
+    noise_std = st.sidebar.number_input(
+        'Noise Standard Deviation (σ)',
+        min_value=0.0,
+        max_value=2.0,  # Adjust as needed
+        value=0.1,       # Default value
+        step=0.01,
+        format="%.2f",
+        help='Determines the variability around the linear relationship in log-space. Higher values introduce more randomness.',
+        key='noise_std'
+        )
+    else:
+        noise_std = 0.0  # Default to zero noise when correlation is disabled
+
     delta_t = st.sidebar.number_input('Time step in years', min_value=0.0001, max_value=1.0, value=0.001, step=0.0001)
     T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=10.0, value=4.0, step=0.1)
     time = np.arange(0, T, delta_t)
@@ -73,8 +88,6 @@ def run():
             b = (log_beta0_max - log_beta0_min) / (log_f_max - log_f_min)
             a = log_beta0_min - b * log_f_min
 
-            # Define standard deviation for noise
-            noise_std = 0.1  # Adjust as needed for variability
         else:
             # When correlation is disabled, no coefficients are needed
             pass
