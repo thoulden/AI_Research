@@ -249,15 +249,15 @@ def run():
         plt.tight_layout()
         st.pyplot(fig_hist)
 
-        # Optional: Scatter plot to visualize correlation on linear scales
-        st.markdown("### Correlation between Beta_0 and f")
-        fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
-        ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
-        ax_scatter.set_xlabel('f')
-        ax_scatter.set_ylabel('Beta_0')
-        ax_scatter.set_title('Scatter Plot of Beta_0 vs. f')
-        ax_scatter.grid(True)
-
-        st.pyplot(fig_scatter)
+        if enable_correlation:
+            # Optional: Scatter plot to visualize correlation on linear scales
+            st.markdown("### Correlation between Beta_0 and f")
+            fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
+            ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
+            ax_scatter.set_xlabel('f')
+            ax_scatter.set_ylabel('Beta_0')
+            ax_scatter.set_title('Scatter Plot of Beta_0 vs. f')
+            ax_scatter.grid(True)
+            st.pyplot(fig_scatter)
 
 
