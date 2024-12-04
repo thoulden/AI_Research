@@ -18,7 +18,7 @@ def display():
     st.latex(r"""
     g_C = \frac{\beta_0}{\lambda (1-\alpha) }g_{S,0}
     """)
-    st.markdown(r""" Next, we need a value for $S_0$. Given our expression for $g_S$, which is given, we can back out $S_0$:""")
+    st.markdown(r""" Next, we need a value for $S_0$. Since we take $g_S$ as given an this has a define expression we can back out $S_0$:""")
     st.latex(r"""
     S_0 = g_S^{\frac{-1}{\beta_0}}(\bar{R}^{ \alpha} {C}_t^{1-\alpha})^{-\frac{\lambda}{\beta_0}} 
     """)
