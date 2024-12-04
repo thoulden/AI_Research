@@ -62,7 +62,9 @@ else:
 
     st.markdown("### Sampling")
 
-    st.markdown("When 'multiple simulations' is selected randomization occurs over log-uniform distributions for $f$, $\beta_0$, $\lambda$, and $D$. When you sellect 'display empirical distributions' in the side bar, on runing a simulation, you will also get a histogram of the values used in the simulation.")
+    st.markdown("When 'multiple simulations' is selected randomization occurs over log-uniform distributions for 
+    st.latex(r"f, \beta_0, \lambda, \text{ and } D")
+    st.markdown("When you sellect 'display empirical distributions' in the side bar, on runing a simulation, you will also get a histogram of the values used in the simulation.")
 
     st.markdown("### Results")
 
