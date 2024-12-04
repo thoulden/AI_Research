@@ -88,4 +88,4 @@ else:
 
 
 
-st.markdown("<span style="color:grey;">Found a bug? Please reach out: tom.w.houlden(at)gmail.com.<span style="color:grey;">")
+st.markdown("<span style="color:grey;">Found a bug? Please reach out: tom.w.houlden(at)gmail.com.</span>")
