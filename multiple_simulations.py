@@ -124,7 +124,7 @@ def run():
         progress_bar.empty()
         status_text.text('Simulation completed.')
 
-    else status_text.text('Test.')
+        else status_text.text('Test.')
 
         # Calculate the fractions (CDF) over time
         fractions_over_time_2 = counts_over_time_2 / num_simulations
