@@ -25,7 +25,7 @@ def display():
     Now keep the same conditions as the above case (on researchers and compute growth), but allow $\Beta = \beta(S)$. I.e., the degree of diminishing returns is dependent on the software level. I assume the functional form for $\beta$ is such that every time the software level closes half the gap between its level and some software ceiling, $S_{\text{ceiling}}$, $\beta$ doubles. This functional form is given by
     """)
     st.latex(r"""
-    \beta(S) = \beta_0 \left(1 - \frac{S_0}{\bar{S} - 1}{\frac{S_{\text{ceiling}}}{S_0} - 1}\right)^{-1}
+    \beta(S) = \beta_0 \left(1 - \frac{\frac{S_0}{\bar{S} - 1}}{{\frac{S_{\text{ceiling}}}{S_0} - 1}}\right)^{-1}
     """)
     st.markdown(r""" where $S_0$ is the software level at GPT-6 and $\beta_0$ is the level of diminishing returns to research at GPT-6.""") 
     st.markdown("""###### Acceleration Case""")
