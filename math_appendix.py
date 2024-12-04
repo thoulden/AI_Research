@@ -14,7 +14,7 @@ def display():
     where $S$ is the software level, $\bar{R}$ is stock of human AI researchers at the time GPT-6 is released (we assume this is a fixed quantity over time), $C$ is the compute available for research on AI, $\lambda$ is the degree of parallelizability in research, and $\alpha \in (0,1)$ dictates the contributions of researchers vs. compute to progress in AI. Importantly, the degree of diminishing returns, $\beta$ is a function of $S$. We assume the functional form for $\beta$ is such that every time the software level closes half the gap between its level and some software ceiling, $S_{\text{ceiling}}$, $\beta$ doubles. This functional form is given by   
     """)
     st.latex(r"""
-    \beta(S_t) = \beta_0 \left(1 - \frac{\frac{S}{\bar{S}} - 1}{\frac{S_{\text{ceiling}}}{\bar{S}} - 1}\right)^{-1}
+    \beta(S) = \beta_0 \left(1 - \frac{\frac{S}{\bar{S}} - 1}{\frac{S_{\text{ceiling}}}{\bar{S}} - 1}\right)^{-1}
     """)
     st.markdown(r"""
     where $\beta_0$ is the starting level of diminishing returns to research. 
