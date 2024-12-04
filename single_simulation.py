@@ -39,6 +39,7 @@ def run():
         S_values = np.zeros(num_steps)
         beta_S = np.zeros(num_steps)
         S_values_Exp = np.zeros(num_steps)
+        
 
         # Initial conditions
         C[0] = C_0
@@ -48,7 +49,8 @@ def run():
         beta_S[0] = beta_0_sample
         S_values_Exp[0] = S_bar
         Researchers[0] = f_sample ** (1 / (lambda_sample * alpha)) * R_bar
-
+        ceiling = np.full(num_steps, S_bar*D_sample) 
+        
         # Simulation loop
         for t in range(1, num_steps):
             # Non-accelerated case
@@ -74,9 +76,13 @@ def run():
 
         # First figure: Log plot of S_values over time
         fig1, ax1 = plt.subplots(figsize=(10, 6))
-        ax1.semilogy(time, S_valuesA, '-', label='Accelerate')
-        ax1.semilogy(time, S_values, '-', label='Base')
-        ax1.semilogy(time, S_values_Exp, 'r--', label='Exp')
+        ax1.semilogy(time, S_valuesA, '-', label='Accelerate') # Accelerate line
+        ax1.semilogy(time, S_values, '-', label='Base') # Base case line
+        ax1.semilogy(time, S_values_Exp, 'r--', label='Exp') # Exponential line
+        ax1.semilogy(time, S_values_Exp, color=[0.5, 0.5, 0.5], linewidth=0.5)  # Ceiling line
+        label_position = (time[2], S_values_Exp[2])  # Adjust to your preferred position
+        ax1.text(label_position[0], label_position[1], 'Ceiling', fontsize=8, color=[0.5, 0.5, 0.5])
+
         ax1.set_xlabel('Time')
         ax1.set_ylabel('S(t)')
         ax1.set_title('Software level over Time (Log Scale)')
