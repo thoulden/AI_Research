@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+from math import log
 
 def run():
     # === Single Simulation Code ===
