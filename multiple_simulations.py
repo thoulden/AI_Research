@@ -74,7 +74,7 @@ def run():
     R_bar = st.sidebar.number_input('R_bar', min_value=0.0, max_value=100000.0, value=1.0, step=0.1)
     C_0 = st.sidebar.number_input('C_0', min_value=0.0, max_value=100000.0, value=1.0, step=0.1)
     g = st.sidebar.number_input('Growth rate (g)', min_value=0.1, max_value=10.0, value=2.77, step=0.01)
-    alpha = st.sidebar.number_input('Alpha (α)', min_value=0.0, max_value=1.0, value=1.0, step=0.01)
+    alpha = st.sidebar.number_input('Alpha (α)', min_value=0.01, max_value=0.99, value=1.0, step=0.01)
 
     # Number of simulations
     num_simulations = st.sidebar.number_input('Number of simulations', min_value=1, max_value=10000, value=1000, step=1)
@@ -204,10 +204,16 @@ def run():
             def moving_average(data, window_size):
                 return np.convolve(data, np.ones(window_size) / window_size, mode='same')
 
-            # Apply smoothing to each multiplier's data (second case)
-            fractions_smoothed_2 = np.zeros_like(fractions_over_time_2)
+            # Initialize smoothed fractions as a copy of the original fractions
+            fractions_smoothed_2 = np.copy(fractions_over_time_2)
+            
+            # Apply smoothing to data excluding t=0
             for m_idx in range(len(multipliers_2)):
-                fractions_smoothed_2[m_idx] = moving_average(fractions_over_time_2[m_idx], window_size)
+                # Apply moving average to all data points except the first one (t=0)
+                smoothed = moving_average(fractions_over_time_2[m_idx][1:], window_size)
+                fractions_smoothed_2[m_idx][1:] = smoothed
+                # Ensure the first data point remains unchanged
+                fractions_smoothed_2[m_idx][0] = fractions_over_time_2[m_idx][0]
         else:
             fractions_smoothed_2 = fractions_over_time_2  # No smoothing
 
