@@ -8,7 +8,25 @@ def display():
     st.latex(r"""
     \dot{S}_t = (R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda} S_t^{1-\Beta}
     """)
-    st.markdown(r""" and across the three cases considered (accelerate, base case, and exponential) I just vary $R_t$ and $\Beta$""")
+    st.markdown(r""" where $R$ is the numebr of researchers (AI or human), and $C$ is the amount of compute available. Across the three cases considered (accelerate, base case, and exponential) I just vary $R_t$ and $\Beta$""")
+    st.markdown("""###### Exponential Case""")
+    st.markdown(r""" To achieve exponential growth in software I assume $\Beta$ remains fixed at $\beta_0$, i.e., the level of diminishing returns to research when GPT-6 is launched. Given (constant) diminishing returns to research, either the number of researchers, or the amount of compute must be growing over time. I assume it is compute growing; if we allowed (human) researchers to grow at the rate necessary to maintain exponential growth there would quickly become more human AI researchers than humans on the planet. Dividing the law of motion by software level yields the software growth rate:""")
+    st.latex(r"""
+    g_{S} = (R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda} S_t^{-\Beta}
+    """)
+    st.markdown(r""" and to ensure that the growth rate is constant, we must have $(R_t^{ \alpha} {C}_t^{1-\alpha})^{\lambda}$ growing at the same rate $S_t^{-\Beta}$ is shrinking. I.e, """) 
+    st.latex(r"""
+    g_C = \frac{\beta_0}{\lambda (1-\alpha) }g_{S,0}
+    """)
+    st.markdown(r""" To close out the model, we just assume $C_0$ is given and $R_t = \bar{R}$ for all $t$. """)
+
+    st.markdown("""###### Base case""")
+    st.markdown(r"""
+    Now keep the same conditions as the above case (on researchers and compute growth), but allow $\Beta = \beta(S)$. I.e., the degree of diminishing returns is dependent on the software level. I assume the functional form for $\beta$ is such that every time the software level closes half the gap between its level and some software ceiling, $S_{\text{ceiling}}$, $\beta$ doubles. This functional form is given by
+    """)
+    st.latex(r"""
+    \beta(S) = \beta_0 \left(1 - \frac{\frac{S}{\bar{S}} - 1}{\frac{S_{\text{ceiling}}}{\bar{S}} - 1}\right)^{-1}
+    """)
 
     
     st.markdown(r"""
