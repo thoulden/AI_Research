@@ -250,11 +250,11 @@ def run():
         st.pyplot(fig_hist)
 
         # Plots correlation between f and beta
-        st.markdown("### Correlation between Beta_0 and f")
+        st.markdown("##### Correlation between Beta_0 and f")
         fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
-        ax_scatter.scatter(np.log(f_samples), np.log(beta_0_samples), alpha=0.5, edgecolor='k', linewidth=0.5)
+        ax_scatter.scatter(np.log(f_samples), np.beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
         ax_scatter.set_xlabel('Log(f)')
-        ax_scatter.set_ylabel('Log(Beta_0)')
+        ax_scatter.set_ylabel('Beta_0')
         ax_scatter.set_title('Scatter Plot of Log(Beta_0) vs. Log(f)')
         ax_scatter.grid(True)
         st.pyplot(fig_scatter)
