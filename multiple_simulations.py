@@ -199,21 +199,29 @@ def run():
         # Calculate the fractions (CDF) over time
         fractions_over_time_2 = counts_over_time_2 / num_simulations
 
+        # Define a custom moving average function that ignores t=0
+        def moving_average_ignore_t0(data, window_size):
+            """
+            Applies a moving average to the data starting from t=1,
+            ensuring that t=0 remains unsmoothed.
+
+            Parameters:
+            - data: numpy array of data points.
+            - window_size: integer, size of the moving window.
+    
+            Returns:
+            - smoothed_data: numpy array of smoothed data.
+            """
+            smoothed = np.copy(data)
+            for m_idx in range(len(multipliers_2)):
+                for i in range(1, len(data)):
+                    start_idx = max(1, i - window_size + 1)
+                    smoothed[m_idx][i] = np.mean(data[m_idx][start_idx:i+1])
+            return smoothed
+
         # Apply smoothing if enabled
         if enable_smoothing:
-            def moving_average(data, window_size):
-                return np.convolve(data, np.ones(window_size) / window_size, mode='same')
-
-            # Initialize smoothed fractions as a copy of the original fractions
-            fractions_smoothed_2 = np.copy(fractions_over_time_2)
-            
-            # Apply smoothing to data excluding t=0
-            for m_idx in range(len(multipliers_2)):
-                # Apply moving average to all data points except the first one (t=0)
-                smoothed = moving_average(fractions_over_time_2[m_idx][1:], window_size)
-                fractions_smoothed_2[m_idx][1:] = smoothed
-                # Ensure the first data point remains unchanged
-                fractions_smoothed_2[m_idx][0] = fractions_over_time_2[m_idx][0]
+            fractions_smoothed_2 = moving_average_ignore_t0(fractions_over_time_2, window_size)
         else:
             fractions_smoothed_2 = fractions_over_time_2  # No smoothing
 
