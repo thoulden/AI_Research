@@ -13,7 +13,7 @@ def run():
     display_distributions = st.sidebar.checkbox('Display empirical distributions', key='display_distributions')
     # Add checkbox for enabling correlated sampling
     enable_correlation = st.sidebar.checkbox(
-    'Enable correlated sampling of r$\beta_0$ and $f$', 
+    'Enable correlated sampling of $\beta_0$ and $f$', 
     key='enable_correlation'
     )
 
@@ -62,12 +62,43 @@ def run():
         progress_bar = st.progress(0)
         status_text = st.empty()
 
+        # Define coefficients for correlation if enabled
+        if enable_correlation:
+            # Calculate coefficients a and b for log(beta_0) = a + b * log(f) + noise
+            log_beta0_min = np.log(beta_0_min)
+            log_beta0_max = np.log(beta_0_max)
+            log_f_min = np.log(f_min)
+            log_f_max = np.log(f_max)
+
+            b = (log_beta0_max - log_beta0_min) / (log_f_max - log_f_min)
+            a = log_beta0_min - b * log_f_min
+
+            # Define standard deviation for noise
+            noise_std = 0.1  # Adjust as needed for variability
+        else:
+            # When correlation is disabled, no coefficients are needed
+            pass
+
         for sim in range(int(num_simulations)):
-            # Sample parameters from log-uniform distributions
+            if enable_correlation: #correlated sampling
+                # Sample f from log-uniform
+                log_f = np.random.uniform(np.log(f_min), np.log(f_max))
+                f_sample = np.exp(log_f)
+
+                # Sample log(beta_0) based on log(f) with some noise
+                log_beta0 = a + b * log_f + np.random.normal(0, noise_std)
+                beta_0_sample = np.exp(log_beta0)
+
+                # Clip beta_0_sample to [beta_0_min, beta_0_max]
+                beta_0_sample = np.clip(beta_0_sample, beta_0_min, beta_0_max)
+            else:
+                # Sample f and beta_0 independently from log-uniform distributions
+                f_sample = np.exp(np.random.uniform(np.log(f_min), np.log(f_max)))
+                beta_0_sample = np.exp(np.random.uniform(np.log(beta_0_min), np.log(beta_0_max)))
+            
+            # Sample other parameters
             lambda_sample = np.exp(np.random.uniform(np.log(lambda_min), np.log(lambda_max)))
             D_sample = np.exp(np.random.uniform(np.log(D_min), np.log(D_max)))
-            beta_0_sample = np.exp(np.random.uniform(np.log(beta_0_min), np.log(beta_0_max)))
-            f_sample = np.exp(np.random.uniform(np.log(f_min), np.log(f_max)))
 
             # Store sampled parameters
             lambda_samples.append(lambda_sample)
