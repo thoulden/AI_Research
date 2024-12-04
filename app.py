@@ -86,4 +86,6 @@ else:
     elif simulation_mode == "Single Simulation":
         single_simulation.run()
 
-st.markdown("Found a bug? Please reach out: tom.w.houlden'at'gmail.com.")
+
+
+st.markdown("Found a bug? Please reach out: tom.w.houlden(at)gmail.com.")
