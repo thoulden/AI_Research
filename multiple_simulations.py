@@ -11,10 +11,11 @@ def run():
     # Simulation settings
     st.sidebar.subheader("Sampling Options")
     display_distributions = st.sidebar.checkbox('Display empirical distributions', key='display_distributions')
+    
     # Add checkbox for enabling correlated sampling
     enable_correlation = st.sidebar.checkbox(
-    r'Enable correlated sampling of $\beta_0$ and $f$', 
-    key='enable_correlation'
+        r'Enable correlated sampling of $\beta_0$ and $f$', 
+        key='enable_correlation'
     )
 
     # Conditional input for noise standard deviation
@@ -32,13 +33,33 @@ def run():
     else:
         noise_std = 0.0  # Default to zero noise when correlation is disabled
 
+    # Time settings using np.linspace for consistent time steps
     delta_t = st.sidebar.number_input('Time step in years', min_value=0.0001, max_value=1.0, value=0.001, step=0.0001)
     T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=10.0, value=4.0, step=0.1)
-    time = np.arange(0, T, delta_t)
-    num_steps = len(time)
-    # Add checkbox for displaying empirical distributions
+    num_steps = int(T / delta_t) + 1  # Ensure inclusion of T
+    time = np.linspace(0, T, num=num_steps, endpoint=True)
+    
+    # Display Options
     st.sidebar.subheader("Display Options")
-       
+    
+    # Toggle for enabling/disabling smoothing
+    enable_smoothing = st.sidebar.checkbox('Enable Smoothing', key='enable_smoothing')
+    
+    # If smoothing is enabled, allow user to select window size
+    if enable_smoothing:
+        # Define the window time for smoothing (in years)
+        window_time = st.sidebar.number_input(
+            'Smoothing window time (years)',
+            min_value=0.0,
+            max_value=T,
+            value=0.07,
+            step=0.01,
+            help='Time duration over which to smooth the CDF. Adjust based on delta_t and desired smoothness.'
+        )
+        window_size = max(int(window_time / delta_t), 1)  # Ensure at least 1
+    else:
+        window_size = 1  # No smoothing
+
     # Parameters for distributions
     lambda_min = st.sidebar.number_input('Minimum Lambda (λ_min)', min_value=0.01, max_value=1.0, value=0.2, step=0.01)
     lambda_max = st.sidebar.number_input('Maximum Lambda (λ_max)', min_value=lambda_min, max_value=1.0, value=0.8, step=0.01)
@@ -70,7 +91,7 @@ def run():
     D_samples = []
     beta_0_samples = []
     f_samples = []
-
+    
         
     if run_simulation:
         counts_over_time_2 = np.zeros((len(multipliers_2), num_steps - 1))
@@ -146,7 +167,7 @@ def run():
             for t in range(1, num_steps):
                 # Non-accelerated case
                 beta_S[t] = beta_0_sample * (1 - ((S_values[t - 1] / S_bar - 1) / (D_sample - 1))) ** (-1)
-                C[t] = C[t-1] * (1+ delta_t * g * beta_0_sample / (lambda_sample * (1-alpha)))
+                C[t] = C[t-1] * (1 + delta_t * g * beta_0_sample / (lambda_sample * (1-alpha)))
                 S_values[t] = S_values[t - 1] + delta_t * (R_bar ** (lambda_sample * alpha))* (C[t-1] ** (lambda_sample * (1-alpha))) * (S_values[t - 1] ** (1- beta_S[t-1]))
 
                 # Accelerated case
@@ -178,27 +199,25 @@ def run():
         # Calculate the fractions (CDF) over time
         fractions_over_time_2 = counts_over_time_2 / num_simulations
 
-        # Apply smoothing to the fractions_over_time using a moving average filter
-        def moving_average(data, window_size):
-            return np.convolve(data, np.ones(window_size) / window_size, mode='same')
+        # Apply smoothing if enabled
+        if enable_smoothing:
+            def moving_average(data, window_size):
+                return np.convolve(data, np.ones(window_size) / window_size, mode='same')
 
-        # Define the window time for smoothing (in years)
-        window_time = st.sidebar.number_input('Smoothing window time (years)', min_value=0.0, max_value=T, value=0.07, step=0.01)
-        window_size = max(int(window_time / delta_t), 1)  # Ensure at least 1
+            # Apply smoothing to each multiplier's data (second case)
+            fractions_smoothed_2 = np.zeros_like(fractions_over_time_2)
+            for m_idx in range(len(multipliers_2)):
+                fractions_smoothed_2[m_idx] = moving_average(fractions_over_time_2[m_idx], window_size)
+        else:
+            fractions_smoothed_2 = fractions_over_time_2  # No smoothing
 
-        # Apply smoothing to each multiplier's data (second case)
-        fractions_smoothed_2 = np.zeros_like(fractions_over_time_2)
-        for m_idx in range(len(multipliers_2)):
-            fractions_smoothed_2[m_idx] = moving_average(fractions_over_time_2[m_idx], window_size)
-
-        # Create a time mask to exclude data before a certain time
-        exclude_time = st.sidebar.number_input('Exclude data before (years)', min_value=0.0, max_value=float(T), value=0.03, step=0.01)
-        time_mask = time[:-1] >= exclude_time
-
-        # Plot the smoothed CDFs (Second Case)
+        # Plot the CDFs
         fig, ax = plt.subplots(figsize=(10, 6))
         for m_idx, multiplier in enumerate(multipliers_2):
-            ax.plot(time[:-1][time_mask], fractions_smoothed_2[m_idx][time_mask], label=f'{multiplier}x')
+            if enable_smoothing:
+                ax.plot(time[:-1], fractions_smoothed_2[m_idx], label=f'{multiplier}x')
+            else:
+                ax.plot(time[:-1], fractions_smoothed_2[m_idx], label=f'{multiplier}x')
         ax.set_xlabel('Years')
         ax.set_ylabel('Cumulative Fraction where g_S_valuesA > multiplier × g_S_values')
         ax.set_title('Cumulative Fraction of Simulations where Accelerated Growth Exceeds Base Growth Over Time')
@@ -208,58 +227,54 @@ def run():
         st.pyplot(fig)
 
         ## Plot parameter distributions
-            # Display empirical distributions if the checkbox is checked
-    if display_distributions:
-        st.markdown("##### Empirical Distributions of Sampled Parameters")
+        if display_distributions:
+            st.markdown("##### Empirical Distributions of Sampled Parameters")
 
-        # Create subplots for the histograms
-        fig_hist, axs = plt.subplots(2, 2, figsize=(12, 10))
+            # Create subplots for the histograms
+            fig_hist, axs = plt.subplots(2, 2, figsize=(12, 10))
 
-        # Generate log bins
-        bin_edges_lambda = np.logspace(np.log10(lambda_min), np.log10(lambda_max), num=20)
-        bin_edges_D = np.logspace(np.log10(D_min), np.log10(D_max), num=20)
-        bin_edges_beta_0 = np.logspace(np.log10(beta_0_min), np.log10(beta_0_max), num=20)
-        bin_edges_f = np.logspace(np.log10(f_min), np.log10(f_max), num=20)
-        
-        # Plot histogram for lambda_samples
-        axs[0, 0].hist(lambda_samples, bins=bin_edges_lambda, edgecolor='black')
-        axs[0, 0].set_title('Distribution of Parallelizability (λ)')
-        axs[0, 0].set_xlabel('Lambda (λ)')
-        axs[0, 0].set_ylabel('Frequency')
+            # Generate log bins
+            bin_edges_lambda = np.logspace(np.log10(lambda_min), np.log10(lambda_max), num=20)
+            bin_edges_D = np.logspace(np.log10(D_min), np.log10(D_max), num=20)
+            bin_edges_beta_0 = np.logspace(np.log10(beta_0_min), np.log10(beta_0_max), num=20)
+            bin_edges_f = np.logspace(np.log10(f_min), np.log10(f_max), num=20)
+            
+            # Plot histogram for lambda_samples
+            axs[0, 0].hist(lambda_samples, bins=bin_edges_lambda, edgecolor='black')
+            axs[0, 0].set_title('Distribution of Parallelizability (λ)')
+            axs[0, 0].set_xlabel('Lambda (λ)')
+            axs[0, 0].set_ylabel('Frequency')
 
-        # Plot histogram for D_samples
-        axs[0, 1].hist(D_samples, bins=bin_edges_D, edgecolor='black')
-        axs[0, 1].set_xscale('log')  # Log scale for D
-        axs[0, 1].set_title(r'Distribution of ceiling term  ($D$, log scale)')
-        axs[0, 1].set_xlabel('D')
-        axs[0, 1].set_ylabel('Frequency')
+            # Plot histogram for D_samples
+            axs[0, 1].hist(D_samples, bins=bin_edges_D, edgecolor='black')
+            axs[0, 1].set_xscale('log')  # Log scale for D
+            axs[0, 1].set_title(r'Distribution of Ceiling Term ($D$, log scale)')
+            axs[0, 1].set_xlabel('D')
+            axs[0, 1].set_ylabel('Frequency')
 
-        # Plot histogram for beta_0_samples
-        axs[1, 0].hist(beta_0_samples, bins=bin_edges_beta_0, edgecolor='black')
-        axs[1, 0].set_title('Distribution of Initial Diminishing Returns (β₀)')
-        axs[1, 0].set_xlabel('β₀')
-        axs[1, 0].set_ylabel('Frequency')
+            # Plot histogram for beta_0_samples
+            axs[1, 0].hist(beta_0_samples, bins=bin_edges_beta_0, edgecolor='black')
+            axs[1, 0].set_title('Distribution of Initial Diminishing Returns (β₀)')
+            axs[1, 0].set_xlabel('β₀')
+            axs[1, 0].set_ylabel('Frequency')
 
-        # Plot histogram for f_samples
-        axs[1, 1].hist(f_samples, bins=bin_edges_f, edgecolor='black')
-        axs[1, 1].set_xscale('log')  # Log scale for f
-        axs[1, 1].set_title(r'Distribution of Speed Up ($f$, log scale)')
-        axs[1, 1].set_xlabel('f')
-        axs[1, 1].set_ylabel('Frequency')
+            # Plot histogram for f_samples
+            axs[1, 1].hist(f_samples, bins=bin_edges_f, edgecolor='black')
+            axs[1, 1].set_xscale('log')  # Log scale for f
+            axs[1, 1].set_title(r'Distribution of Speed Up ($f$, log scale)')
+            axs[1, 1].set_xlabel('f')
+            axs[1, 1].set_ylabel('Frequency')
 
-        plt.tight_layout()
-        st.pyplot(fig_hist)
+            plt.tight_layout()
+            st.pyplot(fig_hist)
 
-        if enable_correlation:
-            # Optional: Scatter plot to visualize correlation on linear scales
-            st.markdown(r"##### Correlation between $\beta_0$ and f")
-            fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
-            ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
-            ax_scatter.set_xlabel('f')
-            ax_scatter.set_ylabel(r'$\beta_0$')
-            ax_scatter.set_title(r'Scatter Plot of $\beta_0$ vs. $f$')
-            ax_scatter.grid(True)
-
-            st.pyplot(fig_scatter)
-
-
+            if enable_correlation:
+                # Optional: Scatter plot to visualize correlation on linear scales
+                st.markdown(r"##### Correlation between $\beta_0$ and f")
+                fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
+                ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
+                ax_scatter.set_xlabel('f')
+                ax_scatter.set_ylabel(r'$\beta_0$')
+                ax_scatter.set_title(r'Scatter Plot of $\beta_0$ vs. f')
+                ax_scatter.grid(True)
+                st.pyplot(fig_scatter)
