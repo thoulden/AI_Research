@@ -51,15 +51,15 @@ def display():
     The ratio we are ultimately interested in $g_{S,\text{accelerated}}/g_{S,\text{base}}$ -- an given this environment the choices of $\bar{R}$ and $C_0$ can have an effect on this ratio -- these are also the variables which seem to be difficult to calibrate meanigfully. Forutunately, changing these varibales has an (almost) undetectable effect on the ratio we are studying. 
     """)
 
-    st.markdown("##### Correlated Sampling")
-    st.markdown(r"When running mutliple simulations I allow for users to select for $\beta_0$ and $f$ to be positively correlated. Specifically, I use ther relationship")
+    st.markdown("""##### Correlated Sampling""")
+    st.markdown(r"""When running mutliple simulations I allow for users to select for $\beta_0$ and $f$ to be positively correlated. Specifically, I use ther relationship"
+    """)
     st.latex(r"""
     \log(\beta_0) = \text{Intercept} + \text{Slope} \times \log(f) + \epsilon \quad \epsilon \sim N(0,\sigma^2)
     """)
     st.markdown(r"""
-    Ignoring $\epsilon$ for a second, to calibrate the slope we just need to ensure that choices of $f$ are scaled so that each choice in the range of possible $f$ can 'pick out' a possible $\beta_0$ value. To do this, set $\text{Slope} = \frac{\log(\beta_{0,max})-\log(\beta_{0,min})}{\log(\f{max}) -\log(\f{max})}$. Then we just have to solve for intercept that ensures (still, ignoring $\epsilon$) that picking $f_{min}$ will result in $\beta_{0,min}$ being chosen (and likewise for max values). Turns out the solution is $\text{Intercept} = \log(\beta_{0,min} - \text{Slope} \times \log(f_{min}).$
-    
-    "")
+    Ignoring $\epsilon$ for a second, to calibrate the slope we just need to ensure that choices of $f$ are scaled so that each choice in the range of possible $f$ can 'pick out' a possible $\beta_0$ value. To do this, set $\text{Slope} = \frac{\log(\beta_{0,max})-\log(\beta_{0,min})}{\log(\f{max}) -\log(\f{max})}$. Then we just have to solve for intercept that ensures (still, ignoring $\epsilon$) that picking $f_{min}$ will result in $\beta_{0,min}$ being chosen (and likewise for max values). Turns out the solution is $\text{Intercept} = \log(\beta_{0,min} - \text{Slope} \times \log(f_{min})$.
+    """)
 
     # Include a link to go back to the main page
     st.markdown("[Go back](?page=main)")
