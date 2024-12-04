@@ -199,8 +199,8 @@ def run():
         for m_idx, multiplier in enumerate(multipliers_2):
             ax.plot(time[:-1][time_mask], fractions_smoothed_2[m_idx][time_mask], label=f'{multiplier}x')
         ax.set_xlabel('Years')
-        ax.set_ylabel('Fraction where g_S_valuesA > multiplier × g_S_values')
-        ax.set_title('Fraction of Simulations where Accelerated Case growth exceeds Base case growth over time')
+        ax.set_ylabel('Cumulative Fraction where g_S_valuesA > multiplier × g_S_values')
+        ax.set_title('Cumulative Fraction of Simulations where Accelerated Growth Exceeds Base Growth Over Time')
         ax.legend()
         ax.grid(True)
         # Display the plot in Streamlit
