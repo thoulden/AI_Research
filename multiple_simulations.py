@@ -23,8 +23,8 @@ def run():
             'Noise Standard Deviation (σ)',
             min_value=0.0,
             max_value=2.0,  # Adjust as needed
-            value=0.1,       # Default value
-            step=0.01,
+            value=0.4,       # Default value
+            step=0.1,
             format="%.2f",
             help='Determines the variability around the linear relationship in log-space. Higher values introduce more randomness.',
             key='noise_std'
