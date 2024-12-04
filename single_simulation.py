@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-import numpy as np
 
 def run():
     # === Single Simulation Code ===
@@ -82,7 +81,7 @@ def run():
         ax1.semilogy(time, S_values_Exp, 'r--', label='Exp') # Exponential line
         ax1.semilogy(time, ceiling, 'black', linewidth=0.5)  # Ceiling line
         log_value = np.log(D)
-        ax1.text(time[2], ceiling[2] + log_value/100, 'Ceiling', fontsize=8, color='black')
+        ax1.text(time[2], ceiling[2], 'Ceiling', fontsize=8, color='black')
         ax1.set_xlabel('Time')
         ax1.set_ylabel('S(t)')
         ax1.set_title('Software level over Time (Log Scale)')
