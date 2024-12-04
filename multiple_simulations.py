@@ -231,7 +231,7 @@ def run():
             if enable_smoothing:
                 ax.plot(time[:-1], fractions_smoothed_2[m_idx], label=f'{multiplier}x')
             else:
-                ax.plot(time[:-1], fractions_smoothed_2[m_idx], label=f'{multiplier}x')
+                ax.plot(time[:-1], fractions_overtime_2[m_idx], label=f'{multiplier}x')
         ax.set_xlabel('Years')
         ax.set_ylabel('Cumulative Fraction where g_S_valuesA > multiplier × g_S_values')
         ax.set_title('Cumulative Fraction of Simulations where Accelerated Growth Exceeds Base Growth Over Time')
