@@ -19,15 +19,15 @@ def run():
 
     # Conditional input for noise standard deviation
     if enable_correlation:
-    noise_std = st.sidebar.number_input(
-        'Noise Standard Deviation (σ)',
-        min_value=0.0,
-        max_value=2.0,  # Adjust as needed
-        value=0.1,       # Default value
-        step=0.01,
-        format="%.2f",
-        help='Determines the variability around the linear relationship in log-space. Higher values introduce more randomness.',
-        key='noise_std'
+        noise_std = st.sidebar.number_input(
+            'Noise Standard Deviation (σ)',
+            min_value=0.0,
+            max_value=2.0,  # Adjust as needed
+            value=0.1,       # Default value
+            step=0.01,
+            format="%.2f",
+            help='Determines the variability around the linear relationship in log-space. Higher values introduce more randomness.',
+            key='noise_std'
         )
     else:
         noise_std = 0.0  # Default to zero noise when correlation is disabled
