@@ -256,7 +256,7 @@ def run():
             ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
             ax_scatter.set_xlabel('f')
             ax_scatter.set_ylabel('Beta_0')
-            ax_scatter.set_title('Scatter Plot of Beta_0 vs. f')
+            ax_scatter.set_title(r'Scatter Plot of $\beta_0$ vs. $f$')
             ax_scatter.grid(True)
 
             st.pyplot(fig_scatter)
