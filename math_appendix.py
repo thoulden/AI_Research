@@ -1,9 +1,10 @@
 import streamlit as st
 
 def display():
+    st.markdown(r""" ## Math Appendix""")
+    
+    st.markdown("""##### Semi-Endogenous Growth Environment""")
     st.markdown(r"""
-    ## Math Appendix
-
     The numerical experiment we consider begins when GPT-6 is released, and assume the law of motion for software: 
     """)
     st.latex(r"""
@@ -66,7 +67,7 @@ def display():
     st.markdown(r"""Then we just have to solve for intercept that ensures (still, ignoring $\epsilon$) that picking $f_{min}$ will result in $\beta_{0,min}$ being chosen (and likewise for max values). This yields
     """)
     st.latex(r"""
-    \text{Intercept} = \log(\beta_{0,min} - \text{Slope} \times \log(f_{min})
+    \text{Intercept} = \log(\beta_{0,min}) - \text{Slope} \times \log(f_{min})
     """)
     
 
