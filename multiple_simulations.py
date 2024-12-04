@@ -13,7 +13,7 @@ def run():
     display_distributions = st.sidebar.checkbox('Display empirical distributions', key='display_distributions')
     # Add checkbox for enabling correlated sampling
     enable_correlation = st.sidebar.checkbox(
-    'Enable correlated sampling of $\beta_0$ and $f$', 
+    'Enable correlated sampling of r$\beta_0$ and $f$', 
     key='enable_correlation'
     )
 
