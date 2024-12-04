@@ -79,9 +79,9 @@ def run():
         ax1.semilogy(time, S_valuesA, '-', label='Accelerate') # Accelerate line
         ax1.semilogy(time, S_values, '-', label='Base') # Base case line
         ax1.semilogy(time, S_values_Exp, 'r--', label='Exp') # Exponential line
-        ax1.semilogy(time, ceiling, color=[0.5, 0.5, 0.5], linewidth=0.5)  # Ceiling line
-        label_position = (time[2], S_values_Exp[2])  # Adjust to your preferred position
-        ax1.text(label_position[0], label_position[1], 'Ceiling', fontsize=8, color=[0.5, 0.5, 0.5])
+        ax1.semilogy(time, ceiling, 'black', linewidth=0.5)  # Ceiling line
+        label_position = (time[2], ceiling[2])  # Adjust to your preferred position
+        ax1.text(label_position[0], label_position[1], 'Ceiling', fontsize=8, color='black')
 
         ax1.set_xlabel('Time')
         ax1.set_ylabel('S(t)')
