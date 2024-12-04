@@ -87,5 +87,6 @@ else:
         single_simulation.run()
 
 
+st.caption("Found a bug? Please reach out: tom.w.houlden(at)gmail.com.")
 
-st.markdown("<span style="color:grey;">Found a bug? Please reach out: tom.w.houlden(at)gmail.com.</span>")
+
