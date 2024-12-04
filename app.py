@@ -67,9 +67,10 @@ else:
     st.markdown(
     r"When 'multiple simulations' is selected, randomization occurs over log-uniform distributions for $f$, $\beta_0$, $\lambda$, and $D$. "
     r"When you select 'display empirical distributions' in the sidebar, on running a simulation, you will also get a histogram of the values used in the simulation."
-
-    r"When you select 'enable correlated sampling of $\beta_0$ and $f$ this means that there will be a positive correlation between values of $f$ and $\beta_0$. This is an attempt to capture the possibility that in worlds where deployment of AI has a large effect on the pace of AI progress there was likely already advanced AI in previous years, so siminishing returns should already be relatively high."
-)
+    )
+    st.markdown(r"When you select 'enable correlated sampling of $\beta_0$ and $f$ this means that there will be a positive correlation between values of $f$ and $\beta_0$. This is an attempt to capture the possibility that in worlds where deployment of AI has a large effect on the pace of AI progress there was likely already advanced AI in previous years, so siminishing returns should already be relatively high."
+    )
+    
 
     st.markdown("### Results")
 
