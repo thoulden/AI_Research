@@ -182,8 +182,9 @@ def run():
         def moving_average(data, window_size):
             return np.convolve(data, np.ones(window_size) / window_size, mode='same')
 
-        # Define the window size for smoothing (adjust as needed)
-        window_size = st.sidebar.slider('Smoothing window size', min_value=1, max_value=200, value=70, step=1)
+        # Define the window time for smoothing (in years)
+        window_time = st.sidebar.number_input('Smoothing window time (years)', min_value=0.0, max_value=T, value=0.07, step=0.01)
+        window_size = max(int(window_time / delta_t), 1)  # Ensure at least 1
 
         # Apply smoothing to each multiplier's data (second case)
         fractions_smoothed_2 = np.zeros_like(fractions_over_time_2)
