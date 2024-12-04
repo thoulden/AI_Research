@@ -33,7 +33,7 @@ def display():
     st.latex(r"""
     f^{\frac{1}{\lambda \alpha}} \bar{R} = \bar{R} + \upsilon S_0 \implies \upsilon = \bar{R} \times \left(f^{\frac{1}{\lambda \alpha}} - 1\right) \times \left[g_{S,0} \times \left(\bar{R}^\alpha C_0^{1-\alpha}\right)^{-\lambda}\right]^{\frac{1}{\beta_0}}
     """)
-    st.mardown(r""" The ratio we are ultimately interested in $g_{S,\text{accelerated}}/g_{S,\text{base}}$ -- an given this environment the choices of $\bar{R}$ and $C_0$ can have an effect on this ratio -- these are also the variables which seem to be difficult to calibrate meanigfully. Forutunately, changing these varibales has an (almost) undetectable effect on the ratio we are studying. 
+    st.markdown(r""" The ratio we are ultimately interested in $g_{S,\text{accelerated}}/g_{S,\text{base}}$ -- an given this environment the choices of $\bar{R}$ and $C_0$ can have an effect on this ratio -- these are also the variables which seem to be difficult to calibrate meanigfully. Forutunately, changing these varibales has an (almost) undetectable effect on the ratio we are studying. 
     """)
 
     st.markdown("""##### Correlated Sampling""")
