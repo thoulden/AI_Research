@@ -8,7 +8,7 @@ def display():
     The numerical experiment we consider begins when GPT-6 is released, and assume the law of motion for software: 
     """)
     st.latex(r"""
-    \dot{S}_t = \bar{R}^{\lambda \alpha} {C}_t^{\lambda(1-\alpha)} S_t^{1-\beta(S_t)}
+    \dot{S}_t = (\bar{R}^{ \alpha} {C}_t^{(1-\alpha)})^{\lambda} S_t^{1-\beta(S_t)}
     """)
     st.markdown(r"""
     where $S$ is the software level, $\bar{R}$ is stock of human AI researchers at the time GPT-6 is released (we assume this is a fixed quantity over time), $C$ is the compute available for research on AI, $\lambda$ is the degree of parallelizability in research, and $\alpha \in (0,1)$ dictates the contributions of researchers vs. compute to progress in AI. Importantly, the degree of diminishing returns, $\beta$ is a function of $S$. We assume the functional form for $\beta$ is such that every time the software level closes half the gap between its level and some software ceiling, $S_{\text{ceiling}}$, $\beta$ doubles. This functional form is given by   
