@@ -34,7 +34,7 @@ def run():
         noise_std = 0.0  # Default to zero noise when correlation is disabled
 
     # Time settings using np.linspace for consistent time steps
-    delta_t = st.sidebar.number_input('Time step in years', min_value=0.0001, max_value=1.0, value=0.001, step=0.0001)
+    delta_t = st.sidebar.number_input('Time step in years', min_value=0.0001, max_value=1.0, value=0.01, step=0.0001)
     T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=10.0, value=4.0, step=0.1)
     num_steps = int(T / delta_t) + 1  # Ensure inclusion of T
     time = np.linspace(0, T, num=num_steps, endpoint=True)
