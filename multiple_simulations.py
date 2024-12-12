@@ -18,6 +18,9 @@ def run():
         key='enable_correlation'
     )
 
+    # Option to compute growth
+    compute_growth = st.sidebar.checkbox('Compute Growth', value=True)
+
     # Conditional input for noise standard deviation
     if enable_correlation:
         noise_std = st.sidebar.number_input(
