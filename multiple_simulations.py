@@ -194,7 +194,7 @@ def run():
                     time_idx = int(interval / delta_t)
                     time_idx = min(time_idx, len(g_S_valuesA)-1)  # Ensure we don't go out of range
                     # Check if condition is met at any point up to time_idx
-                    if np.any(g_S_valuesA[:time_idx+1] > multiplier * g_S_values[:time_idx+1]):
+                    if np.all(g_S_valuesA[:time_idx+1] > multiplier * g_S_values[:time_idx+1]):
                         interval_counts[m_idx, i_idx] += 1
 
             # Update progress bar
