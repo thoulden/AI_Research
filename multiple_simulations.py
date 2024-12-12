@@ -168,9 +168,14 @@ def run():
 
             # Simulation loop
             for t in range(1, num_steps):
+                # If compute_growth is True, compute C as before; else keep it constant at C_0
+                if compute_growth:
+                    C[t] = C[t - 1] * (1 + delta_t * g * beta_0_sample / (lambda_sample * (1 - alpha)))
+                else:
+                    C[t] = C_0
+                
                 # Non-accelerated case
                 beta_S[t] = beta_0_sample * (1 - ((S_values[t - 1] / S_bar - 1) / (D_sample - 1))) ** (-1)
-                C[t] = C[t-1] * (1 + delta_t * g * beta_0_sample / (lambda_sample * (1-alpha)))
                 S_values[t] = S_values[t - 1] + delta_t * (R_bar ** (lambda_sample * alpha))* (C[t-1] ** (lambda_sample * (1-alpha))) * (S_values[t - 1] ** (1- beta_S[t-1]))
 
                 # Accelerated case
