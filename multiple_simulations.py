@@ -26,44 +26,39 @@ def run():
         noise_std = st.sidebar.number_input(
             'Noise Standard Deviation (σ)',
             min_value=0.0,
-            max_value=2.0,  # Adjust as needed
-            value=0.4,       # Default value
+            max_value=2.0,  
+            value=0.4,      
             step=0.1,
             format="%.2f",
             help='Determines the variability around the linear relationship in log-space. Higher values introduce more randomness.',
             key='noise_std'
         )
     else:
-        noise_std = 0.0  # Default to zero noise when correlation is disabled
+        noise_std = 0.0
 
-    # Time settings using np.linspace for consistent time steps
+    # Time settings
     delta_t = st.sidebar.number_input('Time step in years', min_value=0.0001, max_value=1.0, value=0.01, step=0.0001)
     T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=10.0, value=4.0, step=0.1)
-    num_steps = int(T / delta_t) + 1  # Ensure inclusion of T
+    num_steps = int(T / delta_t) + 1
     time = np.linspace(0, T, num=num_steps, endpoint=True)
     
     # Display Options
     st.sidebar.subheader("Display Options")
-    
-    # Toggle for enabling/disabling smoothing
     enable_smoothing = st.sidebar.checkbox('Enable Smoothing', key='enable_smoothing')
-    
-    # If smoothing is enabled, allow user to select window size
     if enable_smoothing:
-        # Define the window time for smoothing (in years)
         window_time = st.sidebar.number_input(
             'Smoothing window time (years)',
             min_value=0.0,
             max_value=T,
             value=0.07,
             step=0.01,
-            help='Time duration over which to smooth the CDF. Adjust based on delta_t and desired smoothness.'
+            help='Time duration over which to smooth the CDF.'
         )
-        window_size = max(int(window_time / delta_t), 1)  # Ensure at least 1
+        window_size = max(int(window_time / delta_t), 1)
     else:
-        window_size = 1  # No smoothing
+        window_size = 1
 
-    # Parameters for distributions
+    # Parameter distributions
     lambda_min = st.sidebar.number_input('Minimum Lambda (λ_min)', min_value=0.01, max_value=1.0, value=0.2, step=0.01)
     lambda_max = st.sidebar.number_input('Maximum Lambda (λ_max)', min_value=lambda_min, max_value=1.0, value=0.8, step=0.01)
     D_min = st.sidebar.number_input('Minimum D (D_min)', min_value=1e6, max_value=1e12, value=1e7, step=1e6, format="%.0e")
@@ -82,62 +77,59 @@ def run():
     # Number of simulations
     num_simulations = st.sidebar.number_input('Number of simulations', min_value=1, max_value=10000, value=1000, step=1)
 
-    # Multipliers
+    # Multipliers for the second scenario
     multipliers_2 = st.sidebar.multiselect(
         'Select multipliers for the second CDF (multipliers_2)',
         options=[1, 3, 10, 30, 50, 100],
         default=[3, 10, 30]
     )
 
-    # Initialize lists to store sampled parameters
+    # Define intervals (in years) for rows (N-months/years)
+    intervals = [1/12, 4/12, 1, 3]  # 1 month, 4 months, 1 year, 3 years
+    interval_labels = ['1 month', '4 months', '1 year', '3 years']
+
+    # Prepare arrays to count how many simulations meet the condition for each interval and multiplier
+    # interval_counts[m, i]: m-th multiplier, i-th interval
+    interval_counts = np.zeros((len(multipliers_2), len(intervals)))
+
+    # Initialize lists to store parameters (optional, for distributions)
     lambda_samples = []
     D_samples = []
     beta_0_samples = []
     f_samples = []
     
-        
     if run_simulation:
         counts_over_time_2 = np.zeros((len(multipliers_2), num_steps - 1))
         progress_bar = st.progress(0)
         status_text = st.empty()
 
-        # Define coefficients for correlation if enabled
+        # If correlation is enabled, pre-compute correlation coefficients
         if enable_correlation:
-            # Calculate coefficients a and b for log(beta_0) = a + b * log(f) + noise
             log_beta0_min = np.log(beta_0_min)
             log_beta0_max = np.log(beta_0_max)
             log_f_min = np.log(f_min)
             log_f_max = np.log(f_max)
-
             b = (log_beta0_max - log_beta0_min) / (log_f_max - log_f_min)
             a = log_beta0_min - b * log_f_min
 
-        else:
-            # When correlation is disabled, no coefficients are needed
-            pass
-
         for sim in range(int(num_simulations)):
-            if enable_correlation: #correlated sampling
-                # Sample f from log-uniform
+            # Sample parameters
+            if enable_correlation:
+                # Sample f
                 log_f = np.random.uniform(np.log(f_min), np.log(f_max))
                 f_sample = np.exp(log_f)
-
-                # Sample log(beta_0) based on log(f) with some noise
+                # Sample beta_0 with correlation
                 log_beta0 = a + b * log_f + np.random.normal(0, noise_std)
                 beta_0_sample = np.exp(log_beta0)
-
-                # Clip beta_0_sample to [beta_0_min, beta_0_max]
                 beta_0_sample = np.clip(beta_0_sample, beta_0_min, beta_0_max)
             else:
-                # Sample f and beta_0 independently from log-uniform distributions
                 f_sample = np.exp(np.random.uniform(np.log(f_min), np.log(f_max)))
                 beta_0_sample = np.exp(np.random.uniform(np.log(beta_0_min), np.log(beta_0_max)))
-            
-            # Sample other parameters
+
             lambda_sample = np.exp(np.random.uniform(np.log(lambda_min), np.log(lambda_max)))
             D_sample = np.exp(np.random.uniform(np.log(D_min), np.log(D_max)))
 
-            # Store sampled parameters
+            # Store samples
             lambda_samples.append(lambda_sample)
             D_samples.append(D_sample)
             beta_0_samples.append(beta_0_sample)
@@ -168,7 +160,6 @@ def run():
 
             # Simulation loop
             for t in range(1, num_steps):
-                # If compute_growth is True, compute C as before; else keep it constant at C_0
                 if compute_growth:
                     C[t] = C[t - 1] * (1 + delta_t * g * beta_0_sample / (lambda_sample * (1 - alpha)))
                 else:
@@ -176,11 +167,11 @@ def run():
                 
                 # Non-accelerated case
                 beta_S[t] = beta_0_sample * (1 - ((S_values[t - 1] / S_bar - 1) / (D_sample - 1))) ** (-1)
-                S_values[t] = S_values[t - 1] + delta_t * (R_bar ** (lambda_sample * alpha))* (C[t-1] ** (lambda_sample * (1-alpha))) * (S_values[t - 1] ** (1- beta_S[t-1]))
+                S_values[t] = S_values[t - 1] + delta_t * (R_bar ** (lambda_sample * alpha)) * (C[t-1] ** (lambda_sample * (1-alpha))) * (S_values[t - 1] ** (1- beta_S[t-1]))
 
                 # Accelerated case
                 beta_SA[t] = beta_0_sample * (1 - ((S_valuesA[t - 1] / S_bar - 1) / (D_sample - 1))) ** (-1)
-                S_valuesA[t] = S_valuesA[t - 1] + delta_t * Researchers[t-1] ** (lambda_sample * alpha) * C[t] ** (lambda_sample * (1-alpha)) * S_valuesA[t - 1] ** (1 - beta_SA[t])
+                S_valuesA[t] = S_valuesA[t - 1] + delta_t * (Researchers[t-1] ** (lambda_sample * alpha)) * (C[t] ** (lambda_sample * (1-alpha))) * S_valuesA[t - 1] ** (1 - beta_SA[t])
                 Researchers[t] = (R_bar + upsilon * S_valuesA[t])
 
                 # Exponential case
@@ -192,9 +183,19 @@ def run():
             S_values_netend = S_values[:-1]
             g_S_values = np.diff(S_values) / (S_values_netend * delta_t)
 
-            # Collect counts over time for the second case
+            # Collect counts over time for multipliers_2 (already done in your code)
             for m_idx, multiplier in enumerate(multipliers_2):
                 counts_over_time_2[m_idx] += g_S_valuesA > multiplier * g_S_values
+
+            # For the table: Check intervals
+            # We want to know if at ANY time up to that interval g_S_valuesA > multiplier*g_S_values
+            for m_idx, multiplier in enumerate(multipliers_2):
+                for i_idx, interval in enumerate(intervals):
+                    time_idx = int(interval / delta_t)
+                    time_idx = min(time_idx, len(g_S_valuesA)-1)  # Ensure we don't go out of range
+                    # Check if condition is met at any point up to time_idx
+                    if np.any(g_S_valuesA[:time_idx+1] > multiplier * g_S_values[:time_idx+1]):
+                        interval_counts[m_idx, i_idx] += 1
 
             # Update progress bar
             if sim % max(int(num_simulations / 100), 1) == 0:
@@ -204,36 +205,35 @@ def run():
         progress_bar.empty()
         status_text.text('Simulation completed.')
 
-        # Calculate the fractions (CDF) over time
+        # Compute fractions for the table
+        fractions_table = interval_counts / num_simulations * 100
+
+        # Create a table similar to the attached image
+        # Rows: interval_labels
+        # Columns: multipliers_2
+        import pandas as pd
+        column_labels = [f"{m}x" for m in multipliers_2]
+        df_table = pd.DataFrame(fractions_table.T, columns=column_labels, index=interval_labels)
+
+        st.markdown("### Probability Table")
+        st.table(df_table.style.format("{:.0f}%"))
+
+        # Existing code for plotting etc...
         fractions_over_time_2 = counts_over_time_2 / num_simulations
 
-        # Define a custom moving average function that ignores t=0
         def moving_average_ignore_t0(data, window_size):
-            """
-            Applies a moving average to the data starting from t=1,
-            ensuring that t=0 remains unsmoothed.
-
-            Parameters:
-            - data: numpy array of data points.
-            - window_size: integer, size of the moving window.
-    
-            Returns:
-            - smoothed_data: numpy array of smoothed data.
-            """
             smoothed = np.copy(data)
             for m_idx in range(len(multipliers_2)):
-                for i in range(1, len(data)):
+                for i in range(1, len(data[m_idx])):
                     start_idx = max(1, i - window_size + 1)
                     smoothed[m_idx][i] = np.mean(data[m_idx][start_idx:i+1])
             return smoothed
 
-        # Apply smoothing if enabled
         if enable_smoothing:
             fractions_smoothed_2 = moving_average_ignore_t0(fractions_over_time_2, window_size)
         else:
-            fractions_smoothed_2 = fractions_over_time_2  # No smoothing
+            fractions_smoothed_2 = fractions_over_time_2
 
-        # Plot the CDFs
         fig, ax = plt.subplots(figsize=(10, 6))
         for m_idx, multiplier in enumerate(multipliers_2):
             if enable_smoothing:
@@ -241,48 +241,39 @@ def run():
             else:
                 ax.plot(time[:-1], fractions_over_time_2[m_idx], label=f'{multiplier}x')
         ax.set_xlabel('Years')
-        ax.set_ylabel('Cumulative Fraction where g_S_valuesA > multiplier × g_S_values')
-        ax.set_title('Cumulative Fraction of Simulations where Accelerated Growth Exceeds Base Growth Over Time')
+        ax.set_ylabel('Fraction where g_S_valuesA > multiplier × g_S_values')
+        ax.set_title('Cumulative Fraction of Simulations Over Time')
         ax.legend()
         ax.grid(True)
-        # Display the plot in Streamlit
         st.pyplot(fig)
 
-        ## Plot parameter distributions
+        # Display distributions if requested
         if display_distributions:
             st.markdown("##### Empirical Distributions of Sampled Parameters")
-
-            # Create subplots for the histograms
             fig_hist, axs = plt.subplots(2, 2, figsize=(12, 10))
-
-            # Generate log bins
             bin_edges_lambda = np.logspace(np.log10(lambda_min), np.log10(lambda_max), num=20)
             bin_edges_D = np.logspace(np.log10(D_min), np.log10(D_max), num=20)
             bin_edges_beta_0 = np.logspace(np.log10(beta_0_min), np.log10(beta_0_max), num=20)
             bin_edges_f = np.logspace(np.log10(f_min), np.log10(f_max), num=20)
-            
-            # Plot histogram for lambda_samples
+
             axs[0, 0].hist(lambda_samples, bins=bin_edges_lambda, edgecolor='black')
             axs[0, 0].set_title('Distribution of Parallelizability (λ)')
             axs[0, 0].set_xlabel('Lambda (λ)')
             axs[0, 0].set_ylabel('Frequency')
 
-            # Plot histogram for D_samples
             axs[0, 1].hist(D_samples, bins=bin_edges_D, edgecolor='black')
-            axs[0, 1].set_xscale('log')  # Log scale for D
+            axs[0, 1].set_xscale('log')
             axs[0, 1].set_title(r'Distribution of Ceiling Term ($D$, log scale)')
             axs[0, 1].set_xlabel('D')
             axs[0, 1].set_ylabel('Frequency')
 
-            # Plot histogram for beta_0_samples
             axs[1, 0].hist(beta_0_samples, bins=bin_edges_beta_0, edgecolor='black')
             axs[1, 0].set_title('Distribution of Initial Diminishing Returns (β₀)')
             axs[1, 0].set_xlabel('β₀')
             axs[1, 0].set_ylabel('Frequency')
 
-            # Plot histogram for f_samples
             axs[1, 1].hist(f_samples, bins=bin_edges_f, edgecolor='black')
-            axs[1, 1].set_xscale('log')  # Log scale for f
+            axs[1, 1].set_xscale('log')
             axs[1, 1].set_title(r'Distribution of Speed Up ($f$, log scale)')
             axs[1, 1].set_xlabel('f')
             axs[1, 1].set_ylabel('Frequency')
@@ -291,7 +282,6 @@ def run():
             st.pyplot(fig_hist)
 
             if enable_correlation:
-                # Optional: Scatter plot to visualize correlation on linear scales
                 st.markdown(r"##### Correlation between $\beta_0$ and f")
                 fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
                 ax_scatter.scatter(f_samples, beta_0_samples, alpha=0.5, edgecolor='k', linewidth=0.5)
