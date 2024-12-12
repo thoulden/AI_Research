@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def run():
     # === Multiple Simulations Code ===
@@ -26,8 +27,8 @@ def run():
         noise_std = st.sidebar.number_input(
             'Noise Standard Deviation (σ)',
             min_value=0.0,
-            max_value=2.0,  
-            value=0.4,      
+            max_value=2.0,
+            value=0.4,
             step=0.1,
             format="%.2f",
             help='Determines the variability around the linear relationship in log-space. Higher values introduce more randomness.',
@@ -84,12 +85,11 @@ def run():
         default=[3, 10, 30]
     )
 
-    # Define intervals (in years) for rows (N-months/years)
+    # Define intervals (in years) and their labels
     intervals = [1/12, 4/12, 1, 3]  # 1 month, 4 months, 1 year, 3 years
     interval_labels = ['1 month', '4 months', '1 year', '3 years']
 
     # Prepare arrays to count how many simulations meet the condition for each interval and multiplier
-    # interval_counts[m, i]: m-th multiplier, i-th interval
     interval_counts = np.zeros((len(multipliers_2), len(intervals)))
 
     # Initialize lists to store parameters (optional, for distributions)
@@ -183,18 +183,32 @@ def run():
             S_values_netend = S_values[:-1]
             g_S_values = np.diff(S_values) / (S_values_netend * delta_t)
 
-            # Collect counts over time for multipliers_2 (already done in your code)
+            # Collect counts over time for multipliers_2
             for m_idx, multiplier in enumerate(multipliers_2):
                 counts_over_time_2[m_idx] += g_S_valuesA > multiplier * g_S_values
 
-            # For the table: Check intervals
-            # We want to know if at ANY time up to that interval g_S_valuesA > multiplier*g_S_values
+            # Check for continuous periods
             for m_idx, multiplier in enumerate(multipliers_2):
                 for i_idx, interval in enumerate(intervals):
-                    time_idx = int(interval / delta_t)
-                    time_idx = min(time_idx, len(g_S_valuesA)-1)  # Ensure we don't go out of range
-                    # Check if condition is met at any point up to time_idx
-                    if np.all(g_S_valuesA[:time_idx+1] > multiplier * g_S_values[:time_idx+1]):
+                    # Convert interval in years to number of steps
+                    interval_steps = max(int(interval / delta_t), 1)
+                    
+                    condition_met = False
+                    max_start = (len(g_S_valuesA) - interval_steps)
+                    if max_start < 0:
+                        # Interval larger than the entire simulation length, skip
+                        continue
+                    
+                    # Slide over every possible window of interval_steps
+                    for start_idx in range(max_start + 1):
+                        a_window = g_S_valuesA[start_idx:start_idx+interval_steps]
+                        base_window = g_S_values[start_idx:start_idx+interval_steps]
+                        # Check if all values exceed threshold in this window
+                        if np.all(a_window > multiplier * base_window):
+                            condition_met = True
+                            break
+                    
+                    if condition_met:
                         interval_counts[m_idx, i_idx] += 1
 
             # Update progress bar
@@ -207,18 +221,13 @@ def run():
 
         # Compute fractions for the table
         fractions_table = interval_counts / num_simulations * 100
-
-        # Create a table similar to the attached image
-        # Rows: interval_labels
-        # Columns: multipliers_2
-        import pandas as pd
         column_labels = [f"{m}x" for m in multipliers_2]
         df_table = pd.DataFrame(fractions_table.T, columns=column_labels, index=interval_labels)
 
-        st.markdown("### Probability Table")
+        st.markdown("### Probability Table (Any Continuous Period)")
         st.table(df_table.style.format("{:.0f}%"))
 
-        # Existing code for plotting etc...
+        # Calculate fractions over time
         fractions_over_time_2 = counts_over_time_2 / num_simulations
 
         def moving_average_ignore_t0(data, window_size):
