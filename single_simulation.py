@@ -7,6 +7,9 @@ def run():
     # Run Simulation Button
     run_simulation = st.sidebar.button('Run Simulation')
     
+    # Option to compute growth
+    compute_growth = st.sidebar.checkbox('Compute Growth', value=True)
+
     # Simulation settings
     delta_t = st.sidebar.number_input('Time step in years', min_value=0.0001, max_value=1.0, value=0.01, step=0.0001)
     T = st.sidebar.number_input('Total simulation time in years (T)', min_value=0.1, max_value=20.0, value=8.0, step=0.1)
@@ -39,7 +42,6 @@ def run():
         S_values = np.zeros(num_steps)
         beta_S = np.zeros(num_steps)
         S_values_Exp = np.zeros(num_steps)
-        
 
         # Initial conditions
         C[0] = C_0
@@ -49,8 +51,8 @@ def run():
         beta_S[0] = beta_0_sample
         S_values_Exp[0] = S_bar
         Researchers[0] = f_sample ** (1 / (lambda_sample * alpha)) * R_bar
-        ceiling = np.full(num_steps, S_bar*D_sample) 
-        
+        ceiling = np.full(num_steps, S_bar * D_sample) 
+
         # Simulation loop
         for t in range(1, num_steps):
             # Non-accelerated case
@@ -66,14 +68,7 @@ def run():
             # Exponential case
             S_values_Exp[t] = S_values_Exp[t - 1] * (1 + delta_t * g)
 
-        # Calculate Growth Rates
-        S_valuesA_netend = S_valuesA[:-1]
-        g_S_valuesA = np.diff(S_valuesA) / (S_valuesA_netend * delta_t)
-        S_values_netend = S_values[:-1]
-        g_S_values = np.diff(S_values) / (S_values_netend * delta_t)
-        C_netend = C[:-1]
-        g_C_values = np.diff(C) / (C_netend * delta_t)
-
+        # Plot results
         # First figure: Log plot of S_values over time
         fig1, ax1 = plt.subplots(figsize=(10, 6))
         ax1.semilogy(time, S_valuesA, '-', label='Accelerate') # Accelerate line
@@ -99,15 +94,23 @@ def run():
         ax2.legend()
         st.pyplot(fig2)
 
-        # Third figure: Growth Rate Comparison
-        fig3, ax3 = plt.subplots(figsize=(10, 6))
-        ax3.plot(time[:-1], g_S_valuesA, '-', label='Accelerate')
-        ax3.plot(time[:-1], g_S_values, '-', label='Base')
-        ax3.plot(time[:-1], g * np.ones(len(time[:-1])), 'r--', label='Exponential')
-        ax3.set_xlabel('Time')
-        ax3.set_ylabel('g')
-        ax3.set_title('Growth Rate of Software -- Comparison')
-        ax3.grid(True)
-        ax3.legend()
-        st.pyplot(fig3)
+        # Compute and plot growth rates only if compute_growth is True
+        if compute_growth:
+            S_valuesA_netend = S_valuesA[:-1]
+            g_S_valuesA = np.diff(S_valuesA) / (S_valuesA_netend * delta_t)
+            S_values_netend = S_values[:-1]
+            g_S_values = np.diff(S_values) / (S_values_netend * delta_t)
+            C_netend = C[:-1]
+            g_C_values = np.diff(C) / (C_netend * delta_t)
 
+            # Third figure: Growth Rate Comparison
+            fig3, ax3 = plt.subplots(figsize=(10, 6))
+            ax3.plot(time[:-1], g_S_valuesA, '-', label='Accelerate')
+            ax3.plot(time[:-1], g_S_values, '-', label='Base')
+            ax3.plot(time[:-1], g * np.ones(len(time[:-1])), 'r--', label='Exponential')
+            ax3.set_xlabel('Time')
+            ax3.set_ylabel('g')
+            ax3.set_title('Growth Rate of Software -- Comparison')
+            ax3.grid(True)
+            ax3.legend()
+            st.pyplot(fig3)
