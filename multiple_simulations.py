@@ -45,19 +45,7 @@ def run():
     
     # Display Options
     st.sidebar.subheader("Display Options")
-    enable_smoothing = st.sidebar.checkbox('Enable Smoothing', key='enable_smoothing')
-    if enable_smoothing:
-        window_time = st.sidebar.number_input(
-            'Smoothing window time (years)',
-            min_value=0.0,
-            max_value=T,
-            value=0.07,
-            step=0.01,
-            help='Time duration over which to smooth the CDF.'
-        )
-        window_size = max(int(window_time / delta_t), 1)
-    else:
-        window_size = 1
+    # Removed smoothing logic
 
     # Parameter distributions
     lambda_min = st.sidebar.number_input('Minimum Lambda (λ_min)', min_value=0.01, max_value=1.0, value=0.2, step=0.01)
@@ -99,6 +87,7 @@ def run():
     f_samples = []
     
     if run_simulation:
+        # counts_over_time_2: tracks fraction over time
         counts_over_time_2 = np.zeros((len(multipliers_2), num_steps - 1))
         progress_bar = st.progress(0)
         status_text = st.empty()
@@ -177,17 +166,18 @@ def run():
                 # Exponential case
                 S_values_Exp[t] = S_values_Exp[t - 1] * (1 + delta_t * g)
 
-            # Calculate growth rates
+            # Calculate growth rates for Accelerated case
             S_valuesA_netend = S_valuesA[:-1]
             g_S_valuesA = np.diff(S_valuesA) / (S_valuesA_netend * delta_t)
-            S_values_netend = S_values[:-1]
-            g_S_values = np.diff(S_values) / (S_values_netend * delta_t)
 
-            # Collect counts over time for multipliers_2
+            # Compare g_S_valuesA to multiplier * g
             for m_idx, multiplier in enumerate(multipliers_2):
-                counts_over_time_2[m_idx] += g_S_valuesA > multiplier * g_S_values
+                # Counts over time
+                counts_over_time_2[m_idx] += g_S_valuesA > (multiplier * g)
 
             # Check for continuous periods
+            # We want to find if there's ANY continuous segment of length interval_steps
+            # where g_S_valuesA > multiplier*g at all steps in that segment.
             for m_idx, multiplier in enumerate(multipliers_2):
                 for i_idx, interval in enumerate(intervals):
                     # Convert interval in years to number of steps
@@ -196,15 +186,13 @@ def run():
                     condition_met = False
                     max_start = (len(g_S_valuesA) - interval_steps)
                     if max_start < 0:
-                        # Interval larger than the entire simulation length, skip
+                        # Interval longer than simulation duration
                         continue
                     
-                    # Slide over every possible window of interval_steps
                     for start_idx in range(max_start + 1):
                         a_window = g_S_valuesA[start_idx:start_idx+interval_steps]
-                        base_window = g_S_values[start_idx:start_idx+interval_steps]
                         # Check if all values exceed threshold in this window
-                        if np.all(a_window > multiplier * base_window):
+                        if np.all(a_window > multiplier * g):
                             condition_met = True
                             break
                     
@@ -230,27 +218,12 @@ def run():
         # Calculate fractions over time
         fractions_over_time_2 = counts_over_time_2 / num_simulations
 
-        def moving_average_ignore_t0(data, window_size):
-            smoothed = np.copy(data)
-            for m_idx in range(len(multipliers_2)):
-                for i in range(1, len(data[m_idx])):
-                    start_idx = max(1, i - window_size + 1)
-                    smoothed[m_idx][i] = np.mean(data[m_idx][start_idx:i+1])
-            return smoothed
-
-        if enable_smoothing:
-            fractions_smoothed_2 = moving_average_ignore_t0(fractions_over_time_2, window_size)
-        else:
-            fractions_smoothed_2 = fractions_over_time_2
-
+        # Plot fractions over time (no smoothing)
         fig, ax = plt.subplots(figsize=(10, 6))
         for m_idx, multiplier in enumerate(multipliers_2):
-            if enable_smoothing:
-                ax.plot(time[:-1], fractions_smoothed_2[m_idx], label=f'{multiplier}x')
-            else:
-                ax.plot(time[:-1], fractions_over_time_2[m_idx], label=f'{multiplier}x')
+            ax.plot(time[:-1], fractions_over_time_2[m_idx], label=f'{multiplier}x')
         ax.set_xlabel('Years')
-        ax.set_ylabel('Fraction where g_S_valuesA > multiplier × g_S_values')
+        ax.set_ylabel('Fraction where g_S_valuesA > multiplier × g')
         ax.set_title('Cumulative Fraction of Simulations Over Time')
         ax.legend()
         ax.grid(True)
